@@ -1,2 +1,2 @@
-Go to lmameri.github.io/pages/NAME_OF_PAGE.html
+Go to lmameri.github.io/index.html
 to viz page.
