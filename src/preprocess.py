@@ -34,6 +34,7 @@ def preprocess_heatmap():
     df['date'] = pd.to_datetime(df['date'])
     media_list=df['compte'].unique()
     return df,media_list
+    
 #df,media_list=preprocess_heatmap()
 #df_count_yearly = get_nbpubs_yearly(df)
 #print(df_count_yearly)

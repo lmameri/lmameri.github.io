@@ -7,7 +7,7 @@ Par exemple : get_heatmap() dans heatmap.py.
 Par exemple : 
 `fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly)`
 
-3) Insérer votre viz dans la boucle définie  à la ligne 32 de publish_html.py.
+3) Insérer votre viz après la ligne 32 de publish_html.py.
 Sous le format f.write(fig_NOM_DE_VOTRE_FIG.to_html(full_html=False))
 Par exemple :     
 `f.write(fig_heatmap_yearly.to_html(full_html=False))`

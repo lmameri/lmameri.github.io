@@ -1,6 +1,7 @@
 import plotly.io as pio
 import preprocess 
 import heatmap
+import line_chart
 import test_button
 
 #                               DEFINE VIZS
@@ -14,6 +15,7 @@ fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly)
 # Viz 2 - Heatmap par mots-clés/Symboles
 
 # Viz 3 - Line chart
+#fig_line_chart = line_chart.get_linechart(data)
 
 # Viz 4 - Bar chart
 
@@ -27,10 +29,12 @@ fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly)
 
 #                          INSERT VIZS IN THE HTML PAGE
 
-# Ajouter vos visualisations ici dans la boucle
+# Ajouter vos visualisations ici 
 # Sous le format f.write(fig_NOM_DE_VOTRE_FIG.to_html(full_html=False))
 with open('index.html', 'w') as f:
     f.write(fig_heatmap_yearly.to_html(full_html=False))
     #f.write(fig_test.to_html(full_html=False))
     #f.write(fig_test_button.to_html(full_html=False))
+    #f.write(fig_line_chart.to_html(full_html=False))
+
     f.close()
