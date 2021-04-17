@@ -10,12 +10,13 @@ import os
 from nltk.util import bigrams
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 import numpy as np
+from datetime import datetime
 
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 
-DATA_PATH = "./poly-Instagram-2011-2020.csv"
+DATA_PATH = 'src/data/poly-Instagram-2011-2020.csv'
 
 DATA = []
 TITRE_DATA = []
@@ -156,18 +157,19 @@ def getTopNgram(y=None, m=None, n = 100, ngram = 1, intervalle = None) :
         beg_month = intervalle[0][1]
         end_year = intervalle[1][0]
         end_month = intervalle[1][1]
-
-        while beg_year <= end_year and beg_month <= end_month :
+        beginning_date = datetime(beg_year, beg_month, 1)
+        end_date = datetime(end_year, end_month, 1)
+        while beginning_date <= end_date :
           posts_id += getPostIDPerDate(beg_year, beg_month)
           if beg_month == 12 :
             beg_month = 1
             beg_year += 1
           else :
             beg_month += 1
+          beginning_date = datetime(beg_year, beg_month, 1)
 
     for id in posts_id :
         data.append(TITRE_DATA[id])
-
     if data == [] : 
       return data
 
@@ -229,7 +231,7 @@ def main():
   removeNan()
   for i, title in enumerate(TITRE_DATA) :
     TITRE_DATA[i] = preprocess(title)
-  topN, vocab_1gram, vocab_2gram = getTopNgram(2020, m=8, n=20, ngram=2)
+  topN, vocab_1gram, vocab_2gram = getTopNgram(n=50, intervalle = ((2011, 12), (2020,5)))
 
   print(topN)
 
