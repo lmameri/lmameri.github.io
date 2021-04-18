@@ -6,11 +6,10 @@ import test_button
 
 #                               DEFINE VIZS
 
-# Viz 1 - Heatmap par media
-df_heatmap, media_list = preprocess.preprocess_heatmap()
-df_count_yearly = preprocess.get_nbpubs_yearly(df_heatmap)
-df_count_monthly = preprocess.get_nbpubs_monthly(df_heatmap, 2012,media_list) # exemple annee
-fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly)
+# Viz 1 - Heatmap par media / en commentaire pour l'instant 
+#df_heatmap, media_list = preprocess.preprocess_heatmap()
+#df_count_yearly = preprocess.get_nbpubs_yearly(df_heatmap)
+#fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly,df_heatmap)
 
 # Viz 2 - Heatmap par mots-clés/Symboles
 
@@ -32,7 +31,7 @@ fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly)
 # Ajouter vos visualisations ici 
 # Sous le format f.write(fig_NOM_DE_VOTRE_FIG.to_html(full_html=False))
 with open('index.html', 'w') as f:
-    f.write(fig_heatmap_yearly.to_html(full_html=False))
+    #f.write(fig_heatmap_yearly.to_html(full_html=False))
     #f.write(fig_test.to_html(full_html=False))
     #f.write(fig_test_button.to_html(full_html=False))
     #f.write(fig_line_chart.to_html(full_html=False))
