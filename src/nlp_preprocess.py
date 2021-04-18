@@ -234,6 +234,12 @@ def get_data_heatmap(topwords, unigram, data):
   df = df.sort_values(by=['id'],ascending=False)
   return(df)
 
+def get_data_funnel(df):
+  df = df.groupby(['mot', 'id'])['date'].count().reset_index()
+  df = df.rename(columns={"date": "count"})
+  df = df.sort_values(by=['id'],ascending=True)
+  return(df)
+
 def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
   global DATA
   global TITRE_DATA 
@@ -249,10 +255,12 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
   print(topN)
   data_heatmap = get_data_heatmap(topN, vocab_1gram, DATA)
   print(data_heatmap)
-  return data_heatmap
+  data_funnel = get_data_funnel(data_heatmap)
+  print(data_funnel)
+  return data_heatmap, data_funnel
 
 # if __name__ == "__main__":
-#     execute_preprocess(50,2018,1,2018,12)
+#     execute_preprocess(50,2018,1,2020,12)
 
 """# Unigrammes des NOUN (part of speech)"""
 
