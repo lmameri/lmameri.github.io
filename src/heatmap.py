@@ -32,7 +32,7 @@ def get_heatmap_keywords(metric, df):
     if(metric == 'vues'):
         temp = df['nb_vues']
         title_map = 'Nombre de vues pour les mots les plus fréquents'
-    fig = go.Figure(data=go.Heatmap(z=temp.fillna(0), x=df['date'], y=df['mot'].unique(),colorscale='sunset'))
+    fig = go.Figure(data=go.Heatmap(z=temp.fillna(0), x=df['date'], y=df['mot'],colorscale='sunset'))
     fig.update_layout(title=title_map, plot_bgcolor='rgba(0, 0, 0,0)',
     xaxis=dict(showgrid=False,  zeroline=False),
         yaxis=dict(showgrid=False,  zeroline=False),)

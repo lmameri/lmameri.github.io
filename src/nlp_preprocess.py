@@ -221,7 +221,7 @@ def getTopNgram(y=None, m=None, n = 100, ngram = 1, intervalle = None) :
 # DATA['dates'][id]
 
 def convert_dates(df):
-    df['date'] = pd.to_datetime(df['date']).strftime("%Y-%m")
+    df['date'] = pd.to_datetime(df['date']).date
     return df
 
 def get_data_heatmap(topwords, unigram, data):
@@ -233,15 +233,6 @@ def get_data_heatmap(topwords, unigram, data):
     for publication in unigram[word]['id']:
       info = {'id': index,'mot': word, 'date': data['date'][publication], 'nb_likes': data['likes'][publication] ,'nb_vues':data['vues'][publication] , 'nb_commentaires':data['commentaires'][publication]}
       df = df.append(info, ignore_index=True)
-  return(df)
-
-def restructure_df(metric,df):
-  if(metric == 'likes'):
-    df = df.groupby(['mot','date', 'id'])['nb_likes'].sum().reset_index()
-  if(metric == 'commentaires'):
-    df = df.groupby(['mot','date', 'id'])['nb_commentaires'].sum().reset_index()
-  if(metric == 'vues'):
-    df = df.groupby(['mot','date', 'id'])['nb_vues'].sum().reset_index()
   df = df.sort_values(by=['id'],ascending=False)
   return(df)
 
@@ -259,11 +250,11 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
   topN, vocab_1gram, vocab_2gram = getTopNgram(n=n, intervalle = ((beg_year, beg_month), (end_year,end_month)))
   print(topN)
   data_heatmap = get_data_heatmap(topN, vocab_1gram, DATA)
-  data_heatmap_like = restructure_df('likes', data_heatmap)
-  data_heatmap_commentaires = restructure_df('commentaires', data_heatmap)
-  data_heatmap_vues = restructure_df('vues', data_heatmap)
-  print(data_heatmap_like)
-  return data_heatmap_like,data_heatmap_commentaires, data_heatmap_vues
+  print(data_heatmap)
+  return data_heatmap
+
+if __name__ == "__main__":
+    execute_preprocess(50,2018,1,2018,12)
 
 """# Unigrammes des NOUN (part of speech)"""
 

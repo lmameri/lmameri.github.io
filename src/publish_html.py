@@ -15,10 +15,10 @@ df_count_monthly = preprocess.get_nbpubs_monthly(df_heatmap, 2012,media_list) # 
 fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly)
 
 # Viz 2 - Heatmap par mots-clés/Symboles
-data_heatmap_likes, data_heatmap_commentaires, data_heatmap_vues = nlp_preprocess.execute_preprocess(50,2018,1,2018,12)
-fig_heatmap_likes = heatmap.get_heatmap_keywords('likes', data_heatmap_likes)
-fig_heatmap_commentaires = heatmap.get_heatmap_keywords('commentaires',data_heatmap_commentaires)
-fig_heatmap_vues = heatmap.get_heatmap_keywords('vues',data_heatmap_vues)
+data_heatmap = nlp_preprocess.execute_preprocess(50,2018,1,2018,12)
+fig_heatmap_likes = heatmap.get_heatmap_keywords('likes', data_heatmap)
+fig_heatmap_commentaires = heatmap.get_heatmap_keywords('commentaires',data_heatmap)
+fig_heatmap_vues = heatmap.get_heatmap_keywords('vues',data_heatmap)
 
 # Viz 3 - Line chart
 #fig_line_chart = line_chart.get_linechart(data)
