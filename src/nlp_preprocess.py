@@ -227,11 +227,9 @@ def convert_dates(df):
 def get_data_heatmap(topwords, unigram, data):
   df = pd.DataFrame(columns=['id','mot', 'date', 'nb_likes', 'nb_vues', 'nb_commentaires'])
   convert_dates(data)
-  index = 0
-  for word in topwords:
-    index +=1
+  for i,word in enumerate(topwords):
     for publication in unigram[word]['id']:
-      info = {'id': index,'mot': word, 'date': data['date'][publication], 'nb_likes': data['likes'][publication] ,'nb_vues':data['vues'][publication] , 'nb_commentaires':data['commentaires'][publication]}
+      info = {'id': i,'mot': word, 'date': data['date'][publication], 'nb_likes': data['likes'][publication] ,'nb_vues':data['vues'][publication] , 'nb_commentaires':data['commentaires'][publication]}
       df = df.append(info, ignore_index=True)
   df = df.sort_values(by=['id'],ascending=False)
   return(df)
@@ -253,8 +251,8 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
   print(data_heatmap)
   return data_heatmap
 
-if __name__ == "__main__":
-    execute_preprocess(50,2018,1,2018,12)
+# if __name__ == "__main__":
+#     execute_preprocess(50,2018,1,2018,12)
 
 """# Unigrammes des NOUN (part of speech)"""
 
