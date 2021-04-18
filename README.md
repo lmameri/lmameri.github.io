@@ -12,7 +12,8 @@ Sous le format f.write(fig_NOM_DE_VOTRE_FIG.to_html(full_html=False))
 Par exemple :     
 `f.write(fig_heatmap_yearly.to_html(full_html=False))`
 
-4) Executer le script publish_html.py, cela devrait updater index.html en ajoutant votre viz. Vous pouvez vérifier localement en cliquant sur index.html, ca devrait ouvrir la page dans votre browser par défaut. 
+4) Executer le script publish_html.py, cela devrait updater index.html en ajoutant votre viz. Vous pouvez vérifier localement en cliquant sur index.html, ca devrait ouvrir la page dans votre browser par défaut. Il faut exécuter depuis la racine du projet.
+`python ./src/publish_html.py`
 
 5) Add, commit, push votre code vers github et attendre quelques minutes pour visualiser la nouvelle page via le lien suivant :
 lmameri.github.io/index.html
