@@ -23,11 +23,9 @@ fig_heatmap_vues = heatmap.get_heatmap_keywords('vues',data_heatmap)
 # Viz 3 - Line chart
 #fig_line_chart = line_chart.get_linechart(data)
 
+# Viz 4 - Bar chart
 df_photo,df_video,df_album,df_igtv = preprocess.preprocess_barchart()
 fig_barchart = barchart.get_barchart(df_photo, df_video, df_album, df_igtv)
-
-# Viz 4 - Bar chart
-
 # Viz 5 - Histogrammes
 
 # Viz des tests a retirer avant soumission (exemple extrait des tutoriels plotly)
