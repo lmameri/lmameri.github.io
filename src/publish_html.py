@@ -2,7 +2,9 @@ import plotly.io as pio
 import preprocess 
 import heatmap
 import line_chart
+import barchart
 import test_button
+import nlp_preprocess
 
 #                               DEFINE VIZS
 
@@ -12,12 +14,17 @@ import test_button
 #fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly,df_heatmap)
 
 # Viz 2 - Heatmap par mots-clés/Symboles
+data_heatmap = nlp_preprocess.execute_preprocess(50,2018,1,2018,12)
+fig_heatmap_likes = heatmap.get_heatmap_keywords('likes', data_heatmap)
+fig_heatmap_commentaires = heatmap.get_heatmap_keywords('commentaires',data_heatmap)
+fig_heatmap_vues = heatmap.get_heatmap_keywords('vues',data_heatmap)
 
 # Viz 3 - Line chart
 #fig_line_chart = line_chart.get_linechart(data)
 
 # Viz 4 - Bar chart
-
+df_photo,df_video,df_album,df_igtv = preprocess.preprocess_barchart()
+fig_barchart = barchart.get_barchart(df_photo, df_video, df_album, df_igtv)
 # Viz 5 - Histogrammes
 
 # Viz des tests a retirer avant soumission (exemple extrait des tutoriels plotly)
@@ -32,6 +39,10 @@ import test_button
 # Sous le format f.write(fig_NOM_DE_VOTRE_FIG.to_html(full_html=False))
 with open('index.html', 'w') as f:
     #f.write(fig_heatmap_yearly.to_html(full_html=False))
+    f.write(fig_heatmap_likes.to_html(full_html=False))
+    f.write(fig_heatmap_commentaires.to_html(full_html=False))
+    f.write(fig_heatmap_vues.to_html(full_html=False))
+    f.write(fig_barchart.to_html(full_html=False))
     #f.write(fig_test.to_html(full_html=False))
     #f.write(fig_test_button.to_html(full_html=False))
     #f.write(fig_line_chart.to_html(full_html=False))
