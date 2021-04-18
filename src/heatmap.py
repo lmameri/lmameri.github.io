@@ -1,6 +1,6 @@
 import plotly.express as px
 import preprocess
-
+import plotly.graph_objects as go
 
 def get_heatmap_yearly(data):
     
@@ -14,11 +14,24 @@ def get_heatmap_yearly(data):
     return fig
 
 def get_heatmap_test():
-    import plotly.graph_objects as go
-
     fig = go.Figure(data=go.Heatmap(
                     z=[[1, None, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20]],
                     x=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                     y=['Morning', 'Afternoon', 'Evening'],
                     hoverongaps = False))
+    return fig
+
+
+def get_heatmap_keywords(metric, df):
+    if(metric == 'likes'):
+        temp = df['nb_likes']
+        title_map = 'Nombre de likes pour les mots les plus fréquents'
+    if(metric == 'commentaires'):
+         temp = df['nb_commentaires']
+         title_map = 'Nombre de commentaires pour les mots les plus fréquents'
+    if(metric == 'vues'):
+        temp = df['nb_vues']
+        title_map = 'Nombre de vues pour les mots les plus fréquents'
+    fig = go.Figure(data=go.Heatmap(z=temp, x=df['date'], y=df['mot'].unique(), colorscale='sunset'))
+    fig.update_layout(title=title_map)
     return fig
