@@ -1,5 +1,7 @@
 import pandas as pd 
 
+df_insta = pd.read_csv('src/data/poly-Instagram-2011-2020.csv')
+df_insta['date'] = pd.to_datetime(df_insta['date'])
 
 # Get number of publications per media per year
 def get_nbpubs_yearly(df_initial):
@@ -29,11 +31,25 @@ def get_nbpubs_monthly(df_initial, year,media_list):
 
 def preprocess_heatmap():
     # colonnes  ['compte', 'pseudo', 'followers', 'date', 'type', 'likes', 'commentaires', 'vues', 'url', 'lien', 'photo', 'titre']
-    df = pd.read_csv('src/data/poly-Instagram-2011-2020.csv')
+    df = df_insta
     df = df[['compte','date']] # only keep these two columns
-    df['date'] = pd.to_datetime(df['date'])
     media_list=df['compte'].unique()
     return df,media_list
+
+def preprocess_barchart():
+    df_insta['date'] = (df_insta['date']).dt.strftime("%Y-%m")
+    df = df_insta[['date','type']]
+    df['count'] = 1
+    print(df)
+    df = df.groupby(['date', 'type'])['count'].count().reset_index()
+    df_photo = df.loc[df['type'] == 'Photo']
+    df_video = df.loc[df['type'] == 'Video']
+    df_album = df.loc[df['type'] == 'Album']
+    df_igtv = df.loc[df['type'] == 'IGTV']
+    return df_photo,df_video,df_album,df_igtv
+
+# if __name__ == "__main__":
+#     preprocess_barchart()
     
 #df,media_list=preprocess_heatmap()
 #df_count_yearly = get_nbpubs_yearly(df)

@@ -2,6 +2,7 @@ import plotly.io as pio
 import preprocess 
 import heatmap
 import line_chart
+import barchart
 import test_button
 import nlp_preprocess
 
@@ -22,6 +23,9 @@ fig_heatmap_vues = heatmap.get_heatmap_keywords('vues',data_heatmap_vues)
 # Viz 3 - Line chart
 #fig_line_chart = line_chart.get_linechart(data)
 
+df_photo,df_video,df_album,df_igtv = preprocess.preprocess_barchart()
+fig_barchart = barchart.get_barchart(df_photo, df_video, df_album, df_igtv)
+
 # Viz 4 - Bar chart
 
 # Viz 5 - Histogrammes
@@ -41,6 +45,7 @@ with open('index.html', 'w') as f:
     f.write(fig_heatmap_likes.to_html(full_html=False))
     f.write(fig_heatmap_commentaires.to_html(full_html=False))
     f.write(fig_heatmap_vues.to_html(full_html=False))
+    f.write(fig_barchart.to_html(full_html=False))
     #f.write(fig_test.to_html(full_html=False))
     #f.write(fig_test_button.to_html(full_html=False))
     #f.write(fig_line_chart.to_html(full_html=False))
