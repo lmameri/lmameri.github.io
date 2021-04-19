@@ -6,5 +6,5 @@ import plotly.graph_objects as go
 def get_funnel(df):
     fig = go.Figure(go.Funnel(
     y = df['mot'],
-    x = df['count']))
+    x = df['nb_occurences']))
     return fig
