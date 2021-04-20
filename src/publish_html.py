@@ -24,8 +24,7 @@ fig_funnel = funnel.get_funnel(data_funnel)
 #fig_line_chart = line_chart.get_linechart(data)
 
 # Viz 4 - Bar chart
-df_photo,df_video,df_album,df_igtv = preprocess.preprocess_barchart()
-fig_barchart = barchart.get_barchart(df_photo, df_video, df_album, df_igtv)
+fig_barchart = barchart.get_barchart()
 # Viz 5 - Histogrammes
 
 # Viz des tests a retirer avant soumission (exemple extrait des tutoriels plotly)

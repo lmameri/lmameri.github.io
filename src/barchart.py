@@ -1,185 +1,201 @@
 import plotly.express as px
 import preprocess
 import plotly.graph_objects as go
+import pandas as pd
 
-def get_barchart(df_photo,df_video,df_album,df_igtv):
-    fig = go.Figure(data=[
-    go.Bar(name='Photo', x=df_photo['date'], y=df_photo['count']),
-    go.Bar(name='Video',x=df_video['date'], y=df_video['count']),
-    go.Bar(name='Album', x=df_album['date'], y=df_album['count']),
-    go.Bar(name='IGTV', x=df_igtv['date'], y=df_igtv['count'])
+df_insta = pd.read_csv('src/data/poly-Instagram-2011-2020.csv')
+media_list=df_insta['compte'].unique()
+
+def get_barchart():
+    fig = go.Figure()
+
+    df_photo,df_video,df_album,df_igtv = preprocess.preprocess_barchart()
+
+    fig.add_traces([
+    go.Bar( visible= True, name='Photo', x=df_photo['date'], y=df_photo['count']),
+    go.Bar(visible= True,name='Video',x=df_video['date'], y=df_video['count']),
+    go.Bar(visible= True,name='Album', x=df_album['date'], y=df_album['count']),
+    go.Bar(visible= True,name='IGTV', x=df_igtv['date'], y=df_igtv['count'])
     ])
+    
 
+    for media in media_list:
+        df_photo,df_video,df_album,df_igtv = preprocess.preprocess_barchart_account(media)
+        fig.add_traces([
+            go.Bar( visible= False,name='Photo', x=df_photo['date'], y=df_photo['count']),
+            go.Bar(visible= False,name='Video',x=df_video['date'], y=df_video['count']),
+            go.Bar(visible= False,name='Album', x=df_album['date'], y=df_album['count']),
+            go.Bar(visible= False,name='IGTV', x=df_igtv['date'], y=df_igtv['count'])])
+            
     fig.update_layout(barmode='stack', title='Fréquence de publication')
-
     fig.update_layout(
         updatemenus=[
             dict(
             buttons=list([
                 dict(
-                    args=["media", "00"],
+                    args=[{"visible":  [True, True,True,True, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
                     label="Vue générale",
-                    method="restyle"
+                    method="update"
                 ),
                 dict(
-                    args=["media", "01"],
-                    label="24heures",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, True, True,True,True, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[0],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "02"],
-                    label="BFMTV",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[1],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "03"],
-                    label="FRANCE 24",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[2],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "04"],
-                    label="L'Orient-Le Jour \ud83d\uddde",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[3],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "05"],
-                    label="LCI",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[4],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "06"],
-                    label="La Presse",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[5],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "07"],
-                    label="La Voix du Nord",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[6],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "08"],
-                    label="LaLibre.be",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[7],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "09"],
-                    label="Le Dauphin\u00e9 Lib\u00e9r\u00e9",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[8],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "10"],
-                    label="Le Devoir",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[9],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "11"],
-                    label="Le Figaro \ud83d\uddde",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[10],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "12"],
-                    label="Le Journal de Montr\u00e9al",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[11],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "13"],
-                    label="Le Matin",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[12],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "14"],
-                    label="Le Monde",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[13],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "15"],
-                    label="Le Monde Afrique",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[14],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "16"],
-                    label="Le Soir",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[15],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "17"],
-                    label="Le Soleil de Que\u0301bec",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[16],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "18"],
-                    label="Le Temps",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[17],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "19"],
-                    label="Lib\u00e9ration",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[18],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "20"],
-                    label="Mediapart",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[19],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "21"],
-                    label="Ouest-France",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[20],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "22"],
-                    label="RTBF",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[21],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "23"],
-                    label="RTL",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[22],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "24"],
-                    label="RTL info",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[23],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "25"],
-                    label="RTS - Radio T\u00e9l\u00e9vision Suisse",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[24],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "26"],
-                    label="Radio France Internationale",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[25],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "27"],
-                    label="Radio-Canada Information",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[26],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "28"],
-                    label="SudOuest",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[27],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "29"],
-                    label="TF1 Le JT",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False,False, False,False,False]}],
+                    label=media_list[28],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "30"],
-                    label="TVA Nouvelles",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False,False, False,False,False]}],
+                    label=media_list[29],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "31"],
-                    label="Tribune de Gen\u00e8ve",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True,False, False,False,False]}],
+                    label=media_list[30],
+                    method="update"
                 ),
                 dict(
-                    args=["media", "32"],
-                    label="franceinfo",
-                    method="restyle"
+                    args=[{"visible":  [False, False,False,False, False, False,False,False, False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,False, False,False,False,True, True,True,True]}],
+                    label=media_list[31],
+                    method="update"
                 )
             ]),
             direction="down",
@@ -192,5 +208,4 @@ def get_barchart(df_photo,df_video,df_album,df_igtv):
             ),
             
         ])
-    
     return fig

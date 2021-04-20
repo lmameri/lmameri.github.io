@@ -31,16 +31,15 @@ def get_nbpubs_monthly(df_initial, year,media_list):
 
 def preprocess_heatmap():
     # colonnes  ['compte', 'pseudo', 'followers', 'date', 'type', 'likes', 'commentaires', 'vues', 'url', 'lien', 'photo', 'titre']
-    df = df_insta
+    df = df_insta.copy()
     df = df[['compte','date']] # only keep these two columns
     media_list=df['compte'].unique()
     return df,media_list
 
 def preprocess_barchart():
     df_insta['date'] = (df_insta['date']).dt.strftime("%Y-%m")
-    df = df_insta[['date','type']]
+    df = (df_insta[['date','type']]).copy()
     df['count'] = 1
-    print(df)
     df = df.groupby(['date', 'type'])['count'].count().reset_index()
     df_photo = df.loc[df['type'] == 'Photo']
     df_video = df.loc[df['type'] == 'Video']
@@ -48,8 +47,19 @@ def preprocess_barchart():
     df_igtv = df.loc[df['type'] == 'IGTV']
     return df_photo,df_video,df_album,df_igtv
 
+def preprocess_barchart_account(account):
+    df = (df_insta.loc[df_insta['compte'] == account]).copy()
+    df['date'] = pd.to_datetime(df['date']).dt.strftime("%Y-%m")
+    df['count'] = 1
+    df = df.groupby(['date', 'type'])['count'].count().reset_index()
+    df_photo_account = df.loc[df['type'] == 'Photo']
+    df_video_account = df.loc[df['type'] == 'Video']
+    df_album_account = df.loc[df['type'] == 'Album']
+    df_igtv_account = df.loc[df['type'] == 'IGTV']
+    return df_photo_account,df_video_account,df_album_account,df_igtv_account
+
 # if __name__ == "__main__":
-#     preprocess_barchart()
+#     preprocess_barchart_account('FRANCE 24')
     
 #df,media_list=preprocess_heatmap()
 #df_count_yearly = get_nbpubs_yearly(df)
