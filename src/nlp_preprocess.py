@@ -221,17 +221,22 @@ def getTopNgram(y=None, m=None, n = 100, ngram = 1, intervalle = None) :
 # DATA['dates'][id]
 
 def convert_dates(df):
-    df['date'] = pd.to_datetime(df['date']).date
+    df['date'] = pd.to_datetime(df['date']).dt.date
     return df
 
 def get_data_heatmap(topwords, unigram, data):
-  df = pd.DataFrame(columns=['id','mot', 'date', 'nb_likes', 'nb_vues', 'nb_commentaires'])
-  convert_dates(data)
+  df = pd.DataFrame(columns=['id','mot', 'date', 'nb_likes', 'nb_vues', 'nb_commentaires', 'nb_occurences'])
   for i,word in enumerate(topwords):
     for publication in unigram[word]['id']:
-      info = {'id': i,'mot': word, 'date': data['date'][publication], 'nb_likes': data['likes'][publication] ,'nb_vues':data['vues'][publication] , 'nb_commentaires':data['commentaires'][publication]}
+      info = {'id': i,'mot': word, 'date': data['date'][publication], 'nb_likes': data['likes'][publication] ,'nb_vues':data['vues'][publication] , 'nb_commentaires':data['commentaires'][publication], 'nb_occurences':len(unigram[word]['id'])}
       df = df.append(info, ignore_index=True)
+  convert_dates(df)
   df = df.sort_values(by=['id'],ascending=False)
+  return(df)
+
+def get_data_funnel(df):
+  df = df.groupby(['mot', 'id'])['nb_occurences'].count().reset_index()
+  df = df.sort_values(by=['id'],ascending=True)
   return(df)
 
 def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
@@ -249,10 +254,12 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
   print(topN)
   data_heatmap = get_data_heatmap(topN, vocab_1gram, DATA)
   print(data_heatmap)
-  return data_heatmap
+  data_funnel = get_data_funnel(data_heatmap)
+  print(data_funnel)
+  return data_heatmap, data_funnel
 
-# if __name__ == "__main__":
-#     execute_preprocess(50,2018,1,2018,12)
+if __name__ == "__main__":
+    execute_preprocess(50,2018,1,2020,12)
 
 """# Unigrammes des NOUN (part of speech)"""
 
