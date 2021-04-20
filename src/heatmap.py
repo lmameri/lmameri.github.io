@@ -82,8 +82,8 @@ def get_heatmap_keywords(df):
         #                      showarrow=False)
     ])
 
-    fig.update_layout( plot_bgcolor='rgba(0, 0, 0,0)', xaxis=dict(showgrid=False,  zeroline=False), yaxis=dict(showgrid=False,  zeroline=False),
-    height=1100)
+    fig.update_layout( plot_bgcolor='rgba(0, 0, 0,0)', xaxis=dict(showgrid=False,  zeroline=False), yaxis=dict(showgrid=True,  zeroline=False),
+    height=1000)
     fig.update_layout(title=title_map)
     return fig
 
