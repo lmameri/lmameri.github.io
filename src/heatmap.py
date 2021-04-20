@@ -22,20 +22,69 @@ def get_heatmap_test():
     return fig
 
 
-def get_heatmap_keywords(metric, df):
-    if(metric == 'likes'):
-        temp = df['nb_likes']
-        title_map = 'Nombre de likes pour les mots les plus fréquents'
-    if(metric == 'commentaires'):
-         temp = df['nb_commentaires']
-         title_map = 'Nombre de commentaires pour les mots les plus fréquents'
-    if(metric == 'vues'):
-        temp = df['nb_vues']
-        title_map = 'Nombre de vues pour les mots les plus fréquents'
-    fig = go.Figure(data=go.Heatmap(z=temp.fillna(0), x=df['date'], y=df['mot'],colorscale='sunset'))
-    fig.update_layout(title=title_map, plot_bgcolor='rgba(0, 0, 0,0)',
-    xaxis=dict(showgrid=False,  zeroline=False),
-        yaxis=dict(showgrid=False,  zeroline=False),)
+def get_heatmap_keywords(df):
+    fig = go.Figure()
+
+    title_map = 'Nombre de likes pour les mots les plus fréquents'
+    fig.add_traces(go.Heatmap(visible=True,z=df['nb_likes'], x=df['date'], y=df['mot'],colorscale='sunset'))
+
+    title_map = 'Nombre de commentaires pour les mots les plus fréquents'
+    fig.add_traces(go.Heatmap(visible=False,z=df['nb_commentaires'], x=df['date'], y=df['mot'],colorscale='sunset'))
+    
+    title_map = 'Nombre de vues pour les mots les plus fréquents'
+    fig.add_traces(go.Heatmap(visible=False, z=df['nb_vues'], x=df['date'], y=df['mot'],colorscale='sunset'))
+    
+    
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="left",
+                x=0.8,
+                y=1.05,
+                showactive=True,
+                buttons=list(
+                    [
+                        dict(
+                            label="Nombre de likes",
+                            method="update",
+                            args=[{"visible":  [True, False, False]}],
+                        ),
+                        dict(
+                            label="Nombre de commentaires",
+                            method="update",
+                            args=[{"visible":  [False, True, False]}],
+                        ),
+                        dict(
+                            label="Nombre de vues",
+                            method="update",
+                            args=[{"visible":  [False, False, True]}],
+                        ),
+                       
+                    ]
+                ),
+            ),
+
+        ]
+    )
+
+    fig.update_layout(
+    annotations=[
+        dict(text="Métrique", x=0, xref="paper", y=1.5, yref="paper",
+                             align="left", showarrow=False),
+        # dict(text="mois début", x=0, xref="paper", y=1.06, yref="paper",
+        #                      align="left", showarrow=False),
+        # dict(text="annee debut", x=0.25, xref="paper", y=1.07,
+        #                      yref="paper", showarrow=False),
+        # dict(text="mois fin", x=0.54, xref="paper", y=1.06, yref="paper",
+        #                      showarrow=False),
+        # dict(text="annee fin", x=0.6, xref="paper", y=1.06, yref="paper",
+        #                      showarrow=False)
+    ])
+
+    fig.update_layout( plot_bgcolor='rgba(0, 0, 0,0)', xaxis=dict(showgrid=False,  zeroline=False), yaxis=dict(showgrid=False,  zeroline=False),
+    height=1100)
+    fig.update_layout(title=title_map)
     return fig
 
 

@@ -252,11 +252,12 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
     TITRE_DATA[i] = preprocess(title)
   topN, vocab_1gram, vocab_2gram = getTopNgram(n=n, intervalle = ((beg_year, beg_month), (end_year,end_month)))
   print(topN)
-  data_heatmap = get_data_heatmap(topN, vocab_1gram, DATA)
-  print(data_heatmap)
-  data_funnel = get_data_funnel(data_heatmap)
-  print(data_funnel)
-  return data_heatmap, data_funnel
+  data_heatmap_by_keywords = get_data_heatmap(topN, vocab_1gram, DATA)
+  data_heatmap_by_time = data_heatmap_by_keywords.sort_values(by=['date'],ascending=False)
+  print(data_heatmap_by_time)
+  print(data_heatmap_by_keywords)
+  data_funnel = get_data_funnel(data_heatmap_by_keywords)
+  return data_heatmap_by_keywords, data_funnel
 
 if __name__ == "__main__":
     execute_preprocess(50,2018,1,2020,12)

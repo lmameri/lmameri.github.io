@@ -16,10 +16,8 @@ df_count_monthly = preprocess.get_nbpubs_monthly(df_heatmap, 2012,media_list) # 
 fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly)
 
 # Viz 2 - Heatmap par mots-clés/Symboles
-data_heatmap, data_funnel = nlp_preprocess.execute_preprocess(50,2018,1,2018,12)
-fig_heatmap_likes = heatmap.get_heatmap_keywords('likes', data_heatmap)
-fig_heatmap_commentaires = heatmap.get_heatmap_keywords('commentaires',data_heatmap)
-fig_heatmap_vues = heatmap.get_heatmap_keywords('vues',data_heatmap)
+data_heatmap, data_funnel = nlp_preprocess.execute_preprocess(50,2018,1,2020,12)
+fig_heatmap_likes = heatmap.get_heatmap_keywords(data_heatmap)
 fig_funnel = funnel.get_funnel(data_funnel)
 
 # Viz 3 - Line chart
@@ -43,8 +41,6 @@ fig_barchart = barchart.get_barchart(df_photo, df_video, df_album, df_igtv)
 with open('index.html', 'w') as f:
     f.write(fig_heatmap_yearly.to_html(full_html=False))
     f.write(fig_heatmap_likes.to_html(full_html=False))
-    f.write(fig_heatmap_commentaires.to_html(full_html=False))
-    f.write(fig_heatmap_vues.to_html(full_html=False))
     f.write(fig_barchart.to_html(full_html=False))
     f.write(fig_funnel.to_html(full_html=False))
     #f.write(fig_test.to_html(full_html=False))
