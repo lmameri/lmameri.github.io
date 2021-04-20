@@ -15,18 +15,17 @@ import nlp_preprocess
 #fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly,df_heatmap)
 
 # Viz 2 - Heatmap par mots-clés/Symboles
-data_heatmap, data_funnel = nlp_preprocess.execute_preprocess(50,2018,1,2018,12)
-fig_heatmap_likes = heatmap.get_heatmap_keywords('likes', data_heatmap)
-fig_heatmap_commentaires = heatmap.get_heatmap_keywords('commentaires',data_heatmap)
-fig_heatmap_vues = heatmap.get_heatmap_keywords('vues',data_heatmap)
+data_heatmap, data_funnel = nlp_preprocess.execute_preprocess(50,2018,1,2020,12)
+fig_heatmap_likes = heatmap.get_heatmap_keywords(data_heatmap)
 fig_funnel = funnel.get_funnel(data_funnel)
 
 # Viz 3 - Line chart
 #fig_line_chart = line_chart.get_linechart(data)
+df_linechart, media_list=preprocess.preprocess_linechart()
+fig_linechart=line_chart.get_linechart(df_linechart,media_list)
 
 # Viz 4 - Bar chart
-df_photo,df_video,df_album,df_igtv = preprocess.preprocess_barchart()
-fig_barchart = barchart.get_barchart(df_photo, df_video, df_album, df_igtv)
+fig_barchart = barchart.get_barchart()
 # Viz 5 - Histogrammes
 
 # Viz des tests a retirer avant soumission (exemple extrait des tutoriels plotly)
@@ -42,12 +41,10 @@ fig_barchart = barchart.get_barchart(df_photo, df_video, df_album, df_igtv)
 with open('index.html', 'w') as f:
     #f.write(fig_heatmap_yearly.to_html(full_html=False))
     f.write(fig_heatmap_likes.to_html(full_html=False))
-    f.write(fig_heatmap_commentaires.to_html(full_html=False))
-    f.write(fig_heatmap_vues.to_html(full_html=False))
     f.write(fig_barchart.to_html(full_html=False))
     f.write(fig_funnel.to_html(full_html=False))
     #f.write(fig_test.to_html(full_html=False))
     #f.write(fig_test_button.to_html(full_html=False))
-    #f.write(fig_line_chart.to_html(full_html=False))
+    f.write(fig_linechart.to_html(full_html=False))
 
     f.close()
