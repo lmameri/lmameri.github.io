@@ -22,6 +22,8 @@ fig_funnel = funnel.get_funnel(data_funnel)
 
 # Viz 3 - Line chart
 #fig_line_chart = line_chart.get_linechart(data)
+df_linechart, media_list=preprocess.preprocess_linechart()
+fig_linechart=line_chart.get_linechart(df_linechart,media_list)
 
 # Viz 4 - Bar chart
 fig_barchart = barchart.get_barchart()
@@ -44,6 +46,6 @@ with open('index.html', 'w') as f:
     f.write(fig_funnel.to_html(full_html=False))
     #f.write(fig_test.to_html(full_html=False))
     #f.write(fig_test_button.to_html(full_html=False))
-    #f.write(fig_line_chart.to_html(full_html=False))
+    f.write(fig_linechart.to_html(full_html=False))
 
     f.close()
