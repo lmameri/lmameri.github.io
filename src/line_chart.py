@@ -4,10 +4,17 @@ import preprocess
 
 import plotly.graph_objects as go
 
+def get_linechart(df,media_list):
+    fig = go.Figure()
 
-def get_linechart(data):
-    
+    for i in range(0,len(media_list)):
+        fig=fig.add_trace(go.Scatter(
+            x=df.loc[df['compte'] == media_list[i]]['date'],
+            y=df.loc[df['compte'] == media_list[i]]['MaxFollowers'],
+            name=media_list[i])) 
+    return fig
 
+def get_linechartexample():
     # Add data
     month = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
             'August', 'September', 'October', 'November', 'December']
