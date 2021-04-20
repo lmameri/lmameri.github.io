@@ -58,6 +58,13 @@ def preprocess_barchart_account(account):
     df_igtv_account = df.loc[df['type'] == 'IGTV']
     return df_photo_account,df_video_account,df_album_account,df_igtv_account
 
+def preprocess_linechart():
+    df = df_insta
+    df['date'] = (df['date']).dt.strftime("%Y-%m")
+    df=df.groupby(['compte','date'])['followers'].max().reset_index().rename(columns={'followers':'MaxFollowers'})
+    media_list=df['compte'].unique()
+    return df, media_list
+
 # if __name__ == "__main__":
 #     preprocess_barchart_account('FRANCE 24')
     
