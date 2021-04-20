@@ -11,6 +11,7 @@ def get_heatmap_yearly(data,df):
     # create figure
     fig = go.Figure()
 
+    
     # Add heatmap yearly trace
     fig.add_trace(go.Heatmap(visible=True,
                     z=data.values,
@@ -18,24 +19,22 @@ def get_heatmap_yearly(data,df):
                     y=medias,
                     hoverongaps = False,colorscale='Reds'))
     
-    
     # Add heatmap monthly traces for each year
-    for year in data.columns.to_list()[1:]:
+    for year in data.columns.to_list():
         fig.add_trace(go.Heatmap(visible=False,
                         z=preprocess.get_nbpubs_monthly(df, year,medias).values,
                         x=months,
                         y=medias,
                         hoverongaps = False,colorscale='Reds'))
-    
+
     fig.update_yaxes(tickvals=medias)
     fig.update_layout(title='Nombre de publications par média par année')
-
     
     fig.update_layout(
         updatemenus=[
             dict(
                 type="buttons",
-                direction="right",
+                direction="left",
                 x=0.7,
                 y=1.2,
                 showactive=True,
