@@ -68,6 +68,14 @@ def preprocess_linechart():
     media_list=df['compte'].unique()
     return df, media_list
 
+
+def preprocess_histogram(data):
+    data_needed=data[['compte','followers','likes','commentaires','vues']].copy()
+    data_needed['likes'].loc[(data_needed['likes']>1500)]=1500
+    data_needed['followers'].loc[(data_needed['followers']>500000)]=500000
+    data_needed['vues'].loc[(data_needed['vues']>10000)]=10000
+    return data_needed
+
 # if __name__ == "__main__":
 #     preprocess_barchart_account('FRANCE 24')
     
