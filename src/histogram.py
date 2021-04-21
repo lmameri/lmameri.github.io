@@ -31,7 +31,7 @@ def histogram_plotting(information, nb_bins=50):
                 labels.append('> {}'.format(i))
 
         data = go.Bar(x=labels,
-                      y=hist[0], hovertemplate='<br><b>Count:</b>: %{y:} ' +
+                      y=hist[0], hovertemplate='<br><b>Compte:</b>: %{y:} ' +
                                                '<br><b>' + information + ':</b>: %{x}<br> <extra></extra>',
                       visible=True if media == 'all' else False)
 
@@ -54,7 +54,7 @@ def histogram_plotting(information, nb_bins=50):
         tickangle=45
     )
 
-    fig.update_layout(title_text='Distribution of {information} in posts'.format(information=information), title_x=0.5)
+    fig.update_layout(title_text='Distribution du nombre de {information} dans les publications'.format(information=information))
 
     list_scroll = []
 
@@ -74,7 +74,7 @@ def histogram_plotting(information, nb_bins=50):
                                         showactive=True,
                                         x=0.7,
                                         xanchor="left",
-                                        y=1.2,
+                                        y=1.24,
                                         yanchor="top"
                                         )])
 
