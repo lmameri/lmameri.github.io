@@ -22,21 +22,36 @@ def get_heatmap_test():
     return fig
 
 
-def get_heatmap_keywords(df):
+def get_heatmap_keywords(data_heatmap_bykeywords,data_heatmap_bytime):
     fig = go.Figure()
 
-    title_map = 'Nombre de likes pour les mots les plus fréquents'
-    fig.add_traces(go.Heatmap(visible=True,z=df['nb_likes'], x=df['date'], y=df['mot'],colorscale='sunset'))
-
-    title_map = 'Nombre de commentaires pour les mots les plus fréquents'
-    fig.add_traces(go.Heatmap(visible=False,z=df['nb_commentaires'], x=df['date'], y=df['mot'],colorscale='sunset'))
-    
-    title_map = 'Nombre de vues pour les mots les plus fréquents'
-    fig.add_traces(go.Heatmap(visible=False, z=df['nb_vues'], x=df['date'], y=df['mot'],colorscale='sunset'))
-    
+    title_map = 'Métriques pour les mots les plus fréquents'
+    fig.add_traces(go.Heatmap(customdata= ['by_keywords'],z=data_heatmap_bykeywords['nb_likes'], x=data_heatmap_bykeywords['date'], y=data_heatmap_bykeywords['mot'],colorscale='sunset'))
     
     fig.update_layout(
         updatemenus=[
+                       dict(
+                type="buttons",
+                direction="left",
+                x=0.2,
+                y=1.05,
+                showactive=True,
+                buttons=list(
+                    [
+                        dict(
+                            label="Affichage par mots clés",
+                            method="update",
+                            args=[{"customdata": ['by_keywords'], "z": [data_heatmap_bykeywords['nb_likes']] , "x": [data_heatmap_bykeywords['date']] , "y": [data_heatmap_bykeywords['mot']]}],
+                        ),
+                        dict(
+                            label="Affichae par ordre d'apparition",
+                            method="update",
+                             args=[{"customdata": ['by_date'], "z": [data_heatmap_bytime['nb_likes']] , "x": [data_heatmap_bytime['date']] , "y": [data_heatmap_bytime['mot']]}],
+                        ),
+                       
+                    ]
+                ),
+            ),
             dict(
                 type="buttons",
                 direction="left",
@@ -48,17 +63,17 @@ def get_heatmap_keywords(df):
                         dict(
                             label="Nombre de likes",
                             method="update",
-                            args=[{"visible":  [True, False, False]}],
+                            args=[{"z": [update_zaxis_likes(fig,data_heatmap_bykeywords,data_heatmap_bytime)]}],
                         ),
                         dict(
                             label="Nombre de commentaires",
                             method="update",
-                            args=[{"visible":  [False, True, False]}],
+                            args=[{"z": [update_zaxis_comments(fig, data_heatmap_bykeywords, data_heatmap_bytime)]}],
                         ),
                         dict(
                             label="Nombre de vues",
                             method="update",
-                            args=[{"visible":  [False, False, True]}],
+                            args=[{"z": [update_zaxis_views(fig, data_heatmap_bykeywords, data_heatmap_bytime)]}],
                         ),
                        
                     ]
@@ -85,7 +100,26 @@ def get_heatmap_keywords(df):
     fig.update_layout( plot_bgcolor='rgba(0, 0, 0,0)', xaxis=dict(showgrid=False,  zeroline=False), yaxis=dict(showgrid=True,  zeroline=False),
     height=1000)
     fig.update_layout(title=title_map)
+
     return fig
+
+def update_zaxis_likes(fig,data_heatmap_bykeywords,data_heatmap_bytime):
+    if(fig['data'][0]['customdata'][0] == 'by_keywords'):
+        return data_heatmap_bykeywords['nb_likes']
+    if(fig['data'][0]['customdata'][0] == 'by_date'):
+        return data_heatmap_bytime['nb_likes']
+
+def update_zaxis_comments(fig,data_heatmap_bykeywords,data_heatmap_bytime):
+    if(fig['data'][0]['customdata'][0] == 'by_keywords'):
+        return data_heatmap_bykeywords['nb_commentaires']
+    if(fig['data'][0]['customdata'][0] == 'by_date'):
+        return data_heatmap_bytime['nb_commentaires']
+
+def update_zaxis_views(fig,data_heatmap_bykeywords,data_heatmap_bytime):
+    if(fig['data'][0]['customdata'][0] == 'by_keywords'):
+        return data_heatmap_bykeywords['nb_vues']
+    if(fig['data'][0]['customdata'][0] == 'by_date'):
+        return data_heatmap_bytime['nb_vues']
 
 
 #'rgb(243, 231, 155)'
