@@ -252,12 +252,23 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
     TITRE_DATA[i] = preprocess(title)
   topN, vocab_1gram, vocab_2gram = getTopNgram(n=n, intervalle = ((beg_year, beg_month), (end_year,end_month)))
   print(topN)
+
   data_heatmap_by_keywords = get_data_heatmap(topN, vocab_1gram, DATA)
-  data_heatmap_by_time = data_heatmap_by_keywords.sort_values(by=['date'],ascending=False)
+  word_by_time = data_heatmap_by_keywords.groupby('mot')['date'].min().reset_index()
+  word_by_time = word_by_time.sort_values(by=['date'],ascending=False)
+  word_by_time.insert(loc=0, column='order_by_time', value=np.arange(len(word_by_time)))
+  data_heatmap_by_time = data_heatmap_by_keywords.copy()
+  print(word_by_time)
   print(data_heatmap_by_time)
-  print(data_heatmap_by_keywords)
-  data_funnel = get_data_funnel(data_heatmap_by_keywords)
-  return data_heatmap_by_keywords, data_funnel
+  for ind1 in data_heatmap_by_time.index:
+    for ind2 in word_by_time.index:
+      if data_heatmap_by_time['mot'][ind1] == word_by_time['mot'][ind2]:
+        data_heatmap_by_time['id'][ind1] = word_by_time['order_by_time'][ind2]
+  data_heatmap_by_time = data_heatmap_by_time.sort_values(by=['id'],ascending=True)
+  print(data_heatmap_by_time)
+  data_funnel_by_keywords = get_data_funnel(data_heatmap_by_keywords)
+  data_funnel_by_time = get_data_funnel(data_heatmap_by_time)
+  return data_heatmap_by_keywords, data_heatmap_by_time, data_funnel_by_keywords,data_funnel_by_time
 
 if __name__ == "__main__":
     execute_preprocess(50,2018,1,2020,12)
