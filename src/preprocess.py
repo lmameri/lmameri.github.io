@@ -70,7 +70,7 @@ def preprocess_linechart():
 
 
 def preprocess_histogram():
-    data=df_insta
+    data = df_insta.copy()
     data_needed=data[['compte','followers','likes','commentaires','vues']].copy()
     data_needed['likes'].loc[(data_needed['likes']>1500)]=1500
     data_needed['followers'].loc[(data_needed['followers']>500000)]=500000

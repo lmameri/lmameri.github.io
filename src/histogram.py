@@ -4,11 +4,9 @@ import plotly.express as px
 from plotly import graph_objs as go
 from preprocess import preprocess_histogram
 
-data = pd.read_csv('poly-instagram-2011-2020.csv')
-data_needed = preprocess_histogram(data)
 
-
-def histogram_plotting(data_needed, information, nb_bins=50):
+def histogram_plotting(information, nb_bins=50):
+    data_needed = preprocess_histogram()
     if information == 'followers':
         data_needed = data_needed[data_needed['followers'].notna()]
         data_needed[information] = data_needed[information].astype(int)

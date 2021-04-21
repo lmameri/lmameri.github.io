@@ -6,6 +6,7 @@ import barchart
 import test_button
 import funnel
 import nlp_preprocess
+import histogram
 
 #                               DEFINE VIZS
 
@@ -29,8 +30,9 @@ fig_barchart = barchart.get_barchart()
 
 
 # Viz 5 - Histogrammes
-#data_needed = preprocess.preprocess_histogram()
-
+fig_hist_likes = histogram.histogram_plotting("likes")
+fig_hist_followers = histogram.histogram_plotting("followers")
+fig_hist_vues = histogram.histogram_plotting("vues")
 
 
 # Viz des tests a retirer avant soumission (exemple extrait des tutoriels plotly)
@@ -49,5 +51,7 @@ with open('index.html', 'w') as f:
     f.write(fig_funnel.to_html(full_html=False))
     f.write(fig_barchart.to_html(full_html=False))
     f.write(fig_linechart.to_html(full_html=False))
-
+    f.write(fig_hist_likes.to_html(full_html=False))
+    f.write(fig_hist_followers.to_html(full_html=False))
+    f.write(fig_hist_vues.to_html(full_html=False))
     f.close()
