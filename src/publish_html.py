@@ -18,7 +18,7 @@ fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly,df_heatmap)
 # Viz 2 - Heatmap par mots-clés/Symboles
 data_heatmap_by_keywords, data_heatmap_by_time, data_funnel_by_keywords,data_funnel_by_time = nlp_preprocess.execute_preprocess(50,2018,1,2020,12)
 fig_heatmap_likes = heatmap.get_heatmap_keywords(data_heatmap_by_keywords,data_heatmap_by_time)
-fig_funnel = funnel.get_funnel(data_funnel_by_keywords)
+fig_funnel = funnel.get_funnel(data_funnel_by_keywords,data_funnel_by_time)
 
 # Viz 3 - Line chart
 #fig_line_chart = line_chart.get_linechart(data)
