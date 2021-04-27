@@ -209,21 +209,14 @@ def getTopNgram(y=None, m=None, n = 100, ngram = 1, intervalle = None) :
       del topN[topN.index('')]
     return topN, vocab_1gram, vocab_2gram
 
-
-# vocab_1gram['coronavirus']
-
-# Récupérer la liste des ID (des publications) où un mot apparaît
-# vocab_1gram['TERM']['ID']
-
-# Récupérer par exemple le nombre de likes d'un post 
-# DATA['likes'][id]
-# ou la date : 
-# DATA['dates'][id]
-
+# converti les date de 'string' a date 
+# paramètres : dataframe
 def convert_dates(df):
     df['date'] = pd.to_datetime(df['date']).dt.date
     return df
 
+# recupere les donnees necessaires pour la heatmap des mots clés 
+# paramètres : la liste des topN mots, unigramme et les données globales (DATA)
 def get_data_heatmap(topwords, unigram, data):
   df = pd.DataFrame(columns=['id','mot', 'date', 'nb_likes', 'nb_vues', 'nb_commentaires', 'nb_occurences'])
   for i,word in enumerate(topwords):
@@ -234,11 +227,15 @@ def get_data_heatmap(topwords, unigram, data):
   df = df.sort_values(by=['id'],ascending=False)
   return(df)
 
+# recupere les donnees necessaires pour le funnel 
+# paramètres : dataframe
 def get_data_funnel(df):
   df = df.groupby(['mot', 'id'])['nb_occurences'].count().reset_index()
   df = df.sort_values(by=['id'],ascending=True)
   return(df)
 
+# execute les differentes etapes afin de recuperer les donnees necessaires pour la heatmap et le funnel
+# paramètres : n le nombre n de mots cles qu on souhaite recuperer, la date de debut et le fin pour l intervalle de temps
 def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
   global DATA
   global TITRE_DATA 
@@ -254,47 +251,21 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
   print(topN)
 
   data_heatmap_by_keywords = get_data_heatmap(topN, vocab_1gram, DATA)
-  word_by_time = data_heatmap_by_keywords.groupby('mot')['date'].min().reset_index()
-  word_by_time = word_by_time.sort_values(by=['date'],ascending=False)
-  word_by_time.insert(loc=0, column='order_by_time', value=np.arange(len(word_by_time)))
+  data_heatmap_by_keywords_by_date = data_heatmap_by_keywords.groupby('mot')['date'].min().reset_index()
+  data_heatmap_by_keywords_by_date = data_heatmap_by_keywords_by_date.sort_values(by=['date'],ascending=False)
+  data_heatmap_by_keywords_by_date.insert(loc=0, column='order_by_date', value=np.arange(len(data_heatmap_by_keywords_by_date)))
   data_heatmap_by_time = data_heatmap_by_keywords.copy()
-  print(word_by_time)
-  print(data_heatmap_by_time)
-  for ind1 in data_heatmap_by_time.index:
-    for ind2 in word_by_time.index:
-      if data_heatmap_by_time['mot'][ind1] == word_by_time['mot'][ind2]:
-        data_heatmap_by_time['id'][ind1] = word_by_time['order_by_time'][ind2]
+
+
+  for i in data_heatmap_by_time.index:
+    for j in data_heatmap_by_keywords_by_date.index:
+      if data_heatmap_by_time['mot'][i] == data_heatmap_by_keywords_by_date['mot'][j]:
+        data_heatmap_by_time['id'][i] = data_heatmap_by_keywords_by_date['order_by_date'][j]
   data_heatmap_by_time = data_heatmap_by_time.sort_values(by=['id'],ascending=True)
-  print(data_heatmap_by_time)
+
   data_funnel_by_keywords = get_data_funnel(data_heatmap_by_keywords)
   data_funnel_by_time = get_data_funnel(data_heatmap_by_time)
   return data_heatmap_by_keywords, data_heatmap_by_time, data_funnel_by_keywords,data_funnel_by_time
 
-if __name__ == "__main__":
-    execute_preprocess(50,2018,1,2020,12)
-
-"""# Unigrammes des NOUN (part of speech)"""
-
-# import os.path
-# from os import path
-
-# if not path.exists("/content/stanford-corenlp-full-2018-02-27/stanford-french-corenlp-2018-02-27-models.jar") :
-#   !wget http://nlp.stanford.edu/software/stanford-corenlp-full-2018-02-27.zip
-#   !unzip stanford-corenlp-full-2018-02-27.zip
-#   !wget https://raw.githubusercontent.com/stanfordnlp/CoreNLP/master/src/edu/stanford/nlp/pipeline/StanfordCoreNLP-french.properties 
-#   !wget https://nlp.stanford.edu/software/stanford-french-corenlp-2018-02-27-models.jar
-#   os.rename('/content/stanford-french-corenlp-2018-02-27-models.jar', '/content/stanford-corenlp-full-2018-02-27/stanford-french-corenlp-2018-02-27-models.jar')
-#   !pip install stanfordcorenlp
-
-# # Extraire tous les NOUN des titres
-# from stanfordcorenlp import StanfordCoreNLP
-# titles_NOUN = []
-# with StanfordCoreNLP('stanford-corenlp-full-2018-02-27', lang='fr') as nlp:
-#   for title in titre_data :
-#     if not isinstance(title, float) or not math.isnan(title) :
-#       titles_NOUN.append(" ".join([word for word, tag in nlp.pos_tag((preprocess_text(title))) if tag == 'NOUN']))
-#     else :
-#       titles_NOUN.append('')
-
-# build_voc(titles_NOUN)
-# get_n_top_occurences(vocab, 50)
+# if __name__ == "__main__":
+#     execute_preprocess(50,2018,1,2020,12)

@@ -1,10 +1,8 @@
 import preprocess
 import plotly.graph_objects as go
+import hovertemplate
 
-style = "<span>Date de publication: </span>" + \
-        "<b>%{x} </b>" +  "<br><span>Mot-clé: : </span>" + \
-        "<b>%{y}</b>" + "<br><span>Nombre: </span>" + \
-        "<b>%{z} </b>" +  "<extra></extra>"
+
 
 def get_heatmap_yearly(data,df):
     years = data.columns.to_list()
@@ -110,6 +108,8 @@ def get_heatmap_yearly(data,df):
     return fig
 
 
+# permet de tracer la heatmap des mots cles 
+# paramètres :  1 dataframe des mots cles triees par importance et 1 dataframe des mots cles triees par ordre d apparition  
 def get_heatmap_keywords(data_heatmap_bykeywords,data_heatmap_bytime):
     fig = go.Figure()
 
@@ -119,7 +119,7 @@ def get_heatmap_keywords(data_heatmap_bykeywords,data_heatmap_bytime):
                             z=data_heatmap_bykeywords['nb_likes'], 
                             x=data_heatmap_bykeywords['date'], 
                             y=data_heatmap_bykeywords['mot'],
-                            colorscale='sunset', hovertemplate=style, hoverongaps=False)
+                            colorscale='sunset', hovertemplate=hovertemplate.get_hovertemplate_heatmap_keywords(), hoverongaps=False)
 
 
     fig.add_trace(trace_heatmap)
@@ -180,38 +180,38 @@ def get_heatmap_keywords(data_heatmap_bykeywords,data_heatmap_bytime):
         ]
     )
 
-    fig.update_layout(xaxis_title="Date de publication",yaxis_title="Mots clés",
+    fig.update_layout(xaxis_title="Date de publication",yaxis_title="Mots clés",dragmode=False, plot_bgcolor='rgba(0, 0, 0,0)', xaxis=dict(showgrid=False,  zeroline=False), yaxis=dict(showgrid=True,  zeroline=False),
+    height=1000,title=title_map,
     annotations=[
         dict(text="Métriques : ", x=0.6, xref="paper", y=1.04, yref="paper",
                              align="left", showarrow=False),
         dict(text="Classement des mots clés : ", x=0, xref="paper", y=1.04, yref="paper",
                              align="left", showarrow=False),
     ])
-
-    fig.update_layout(dragmode=False, plot_bgcolor='rgba(0, 0, 0,0)', xaxis=dict(showgrid=False,  zeroline=False), yaxis=dict(showgrid=True,  zeroline=False),
-    height=1000)
-    fig.update_layout(title=title_map)
-
     return fig
 
+
+# permet de updater l'axe des z lorsqu'on clique sur le bouton likes 
+# paramètres :  la heatmap (fig),  1 dataframe des mots cles triees par importance et 1 dataframe des mots cles triees par ordre d apparition  
 def update_zaxis_likes(fig,data_heatmap_bykeywords,data_heatmap_bytime):
     if(fig['data'][0]['customdata'][0] == 'by_keywords'):
         return data_heatmap_bykeywords['nb_likes']
     if(fig['data'][0]['customdata'][0] == 'by_date'):
         return data_heatmap_bytime['nb_likes']
 
+# permet de updater l'axe des z lorsqu'on clique sur le bouton commentaire 
+# paramètres :  la heatmap (fig),  1 dataframe des mots cles triees par importance et 1 dataframe des mots cles triees par ordre d apparition  
 def update_zaxis_comments(fig,data_heatmap_bykeywords,data_heatmap_bytime):
     if(fig['data'][0]['customdata'][0] == 'by_keywords'):
         return data_heatmap_bykeywords['nb_commentaires']
     if(fig['data'][0]['customdata'][0] == 'by_date'):
         return data_heatmap_bytime['nb_commentaires']
 
+# permet de updater l'axe des z lorsqu'on clique sur le bouton vues 
+# paramètres :  la heatmap (fig),  1 dataframe des mots cles triees par importance et 1 dataframe des mots cles triees par ordre d apparition  
 def update_zaxis_views(fig,data_heatmap_bykeywords,data_heatmap_bytime):
     if(fig['data'][0]['customdata'][0] == 'by_keywords'):
         return data_heatmap_bykeywords['nb_vues']
     if(fig['data'][0]['customdata'][0] == 'by_date'):
         return data_heatmap_bytime['nb_vues']
 
-
-
-#'rgb(243, 231, 155)'

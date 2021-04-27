@@ -1,19 +1,19 @@
 import plotly.express as px
 import preprocess
 import plotly.graph_objects as go
+import hovertemplate
 
 
-style = "<span>Mot-clé: </span>" + \
-        "<b>%{y} </b>" +  "<br><span>Nombre de publications: : </span>" + \
-        "<b>%{x}</b>" + "<extra></extra>"
 
+# permet la realisation du funnel avec plotly
+# paramètres : 1 dataframe des mots cles triees par importance et 1 dataframe des mots cles triees par ordre d apparition  
 def get_funnel(data_funnel_by_keywords,data_funnel_by_time):
     fig = go.Figure()
 
     colors=['rgb(92, 83, 165)' for x in data_funnel_by_keywords['mot']]
     marker = {"color": colors, "line": {"color": colors}}
     connector = {"line": {"color": "rgb(191, 88, 95)"}}
-    trace_funnel = go.Funnel( y = data_funnel_by_keywords['mot'], x = data_funnel_by_keywords['nb_occurences'],marker=marker,connector=connector, hovertemplate=style)
+    trace_funnel = go.Funnel( y = data_funnel_by_keywords['mot'], x = data_funnel_by_keywords['nb_occurences'],marker=marker,connector=connector, hovertemplate=hovertemplate.get_hovertemplate_funnel())
     fig.add_traces(trace_funnel)
     
 

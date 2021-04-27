@@ -39,6 +39,7 @@ def preprocess_heatmap():
     media_list=df['compte'].unique()
     return df,media_list
 
+# recupere les donnees necessaires pour le barchart
 def preprocess_barchart():
     df_insta['date'] = pd.to_datetime(df_insta['date']).dt.strftime("%Y-%m")
     df = (df_insta[['date','type']]).copy()
@@ -50,6 +51,8 @@ def preprocess_barchart():
     df_igtv = df.loc[df['type'] == 'IGTV']
     return df_photo,df_video,df_album,df_igtv
 
+# recupere les donnees necessaires pour le barchart par media
+# paramètres : le nom du média
 def preprocess_barchart_account(account):
     df = (df_insta.loc[df_insta['compte'] == account]).copy()
     df['date'] = pd.to_datetime(df['date']).dt.strftime("%Y-%m")
