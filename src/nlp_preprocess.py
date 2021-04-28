@@ -265,7 +265,9 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
 
   data_funnel_by_keywords = get_data_funnel(data_heatmap_by_keywords)
   data_funnel_by_time = get_data_funnel(data_heatmap_by_time)
+  data_funnel_by_time = data_funnel_by_time.sort_values(by=['id'],ascending=False)
+
   return data_heatmap_by_keywords, data_heatmap_by_time, data_funnel_by_keywords,data_funnel_by_time
 
-# if __name__ == "__main__":
-#     execute_preprocess(50,2018,1,2020,12)
+if __name__ == "__main__":
+    execute_preprocess(50,2018,1,2020,12)
