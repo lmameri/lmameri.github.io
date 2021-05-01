@@ -217,12 +217,17 @@ def convert_dates(df):
 
 # recupere les donnees necessaires pour la heatmap des mots clés 
 # paramètres : la liste des topN mots, unigramme et les données globales (DATA)
-def get_data_heatmap(topwords, unigram, data):
+def get_data_heatmap(topwords, unigram, bigram, data):
   df = pd.DataFrame(columns=['id','mot', 'date', 'nb_likes', 'nb_vues', 'nb_commentaires', 'nb_occurences'])
   for i,word in enumerate(topwords):
-    for publication in unigram[word]['id']:
-      info = {'id': i,'mot': word, 'date': data['date'][publication], 'nb_likes': data['likes'][publication] ,'nb_vues':data['vues'][publication] , 'nb_commentaires':data['commentaires'][publication], 'nb_occurences':len(unigram[word]['id'])}
-      df = df.append(info, ignore_index=True)
+    if (len(word.split(' ')) == 1):
+      for publication in unigram[word]['id']:
+        info = {'id': i,'mot': word, 'date': data['date'][publication], 'nb_likes': data['likes'][publication] ,'nb_vues':data['vues'][publication] , 'nb_commentaires':data['commentaires'][publication], 'nb_occurences':len(unigram[word]['id'])}
+        df = df.append(info, ignore_index=True)
+    if(len(word.split(' ')) == 2):
+      for publication in bigram[word]['id']:
+        info = {'id': i,'mot': word, 'date': data['date'][publication], 'nb_likes': data['likes'][publication] ,'nb_vues':data['vues'][publication] , 'nb_commentaires':data['commentaires'][publication], 'nb_occurences':len(bigram[word]['id'])}
+        df = df.append(info, ignore_index=True)
   convert_dates(df)
   df = df.sort_values(by=['id'],ascending=False)
   return(df)
@@ -247,10 +252,10 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
   removeNan()
   for i, title in enumerate(TITRE_DATA) :
     TITRE_DATA[i] = preprocess(title)
-  topN, vocab_1gram, vocab_2gram = getTopNgram(n=n, intervalle = ((beg_year, beg_month), (end_year,end_month)))
+  topN, vocab_1gram, vocab_2gram = getTopNgram(n=n, ngram = 2, intervalle = ((beg_year, beg_month), (end_year,end_month)))
   print(topN)
 
-  data_heatmap_by_keywords = get_data_heatmap(topN, vocab_1gram, DATA)
+  data_heatmap_by_keywords = get_data_heatmap(topN, vocab_1gram,vocab_2gram, DATA)
   data_heatmap_by_keywords_by_date = data_heatmap_by_keywords.groupby('mot')['date'].min().reset_index()
   data_heatmap_by_keywords_by_date = data_heatmap_by_keywords_by_date.sort_values(by=['date'],ascending=False)
   data_heatmap_by_keywords_by_date.insert(loc=0, column='order_by_date', value=np.arange(len(data_heatmap_by_keywords_by_date)))
