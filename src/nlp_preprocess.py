@@ -94,7 +94,7 @@ def getDates() :
 # Intègre les # au mot associé afin d'éviter d'avoir des # comme token (idem pour le @)
 # paramètres : t [string] pour un titre
 # retourne le titre : string
-def joinHashtag(t) :
+def joinSpecialChar(t) :
   t = preprocess_text(t).split(" ")
   while '#' in t :
     index_of_hashtag = t.index('#')
@@ -113,7 +113,7 @@ def joinHashtag(t) :
 def preprocess(title) :
   text = ''
   if isNotNan(title) :
-    text = joinHashtag(title)
+    text = joinSpecialChar(title)
   return text
 
 # retourne les ID des publications selon l'année et le mois
