@@ -17,3 +17,9 @@ def get_hovertemplate_heatmap_keywords():
         "<b>%{y}</b>" + "<br><span>Nombre: </span>" + \
         "<b>%{z} </b>" +  "<extra></extra>"
     return style_heatmap_keywords
+
+def get_hovertemplate_linechart():
+    style_linechart = "<span>Période: </span>" + \
+    "<b>%{x}</b>" +  "<br><span>Nombre d'abonnés: : </span>" + \
+    "<b>%{y}</b>" +  "<extra></extra>"
+    return style_linechart
