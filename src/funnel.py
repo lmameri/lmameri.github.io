@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import hovertemplate
 
 WIDTH = 1000
-HEIGHT =  700
+HEIGHT =  1100
 
 # permet la realisation du funnel avec plotly
 # paramètres : 1 dataframe des mots cles triees par importance et 1 dataframe des mots cles triees par ordre d apparition  
@@ -39,12 +39,12 @@ def get_funnel(data_funnel_by_keywords,data_funnel_by_time):
                 buttons=list(
                     [
                         dict(
-                            label="Par importance",
+                            label="Par score TF-IDF",
                             method="update",
                             args=[{"x" : [data_funnel_by_keywords['nb_occurences']] , "y": [data_funnel_by_keywords['mot']]}]
                         ),
                         dict(
-                            label="Par date d\'apparition dans le temps",
+                            label="Par ordre d\'apparition dans le temps",
                             method="update",
                             args=[{"x" : [data_funnel_by_time['nb_occurences']] , "y": [data_funnel_by_time['mot']]}]
                         )

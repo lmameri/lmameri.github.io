@@ -259,20 +259,20 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
   data_heatmap_by_keywords_by_date = data_heatmap_by_keywords.groupby('mot')['date'].min().reset_index()
   data_heatmap_by_keywords_by_date = data_heatmap_by_keywords_by_date.sort_values(by=['date'],ascending=False)
   data_heatmap_by_keywords_by_date.insert(loc=0, column='order_by_date', value=np.arange(len(data_heatmap_by_keywords_by_date)))
-  data_heatmap_by_time = data_heatmap_by_keywords.copy()
+  data_heatmap_by_date = data_heatmap_by_keywords.copy()
 
 
-  for i in data_heatmap_by_time.index:
+  for i in data_heatmap_by_date.index:
     for j in data_heatmap_by_keywords_by_date.index:
-      if data_heatmap_by_time['mot'][i] == data_heatmap_by_keywords_by_date['mot'][j]:
-        data_heatmap_by_time['id'][i] = data_heatmap_by_keywords_by_date['order_by_date'][j]
-  data_heatmap_by_time = data_heatmap_by_time.sort_values(by=['id'],ascending=True)
+      if data_heatmap_by_date['mot'][i] == data_heatmap_by_keywords_by_date['mot'][j]:
+        data_heatmap_by_date['id'][i] = data_heatmap_by_keywords_by_date['order_by_date'][j]
+  data_heatmap_by_date = data_heatmap_by_date.sort_values(by=['id'],ascending=True)
 
   data_funnel_by_keywords = get_data_funnel(data_heatmap_by_keywords)
-  data_funnel_by_time = get_data_funnel(data_heatmap_by_time)
-  data_funnel_by_time = data_funnel_by_time.sort_values(by=['id'],ascending=False)
+  data_funnel_by_keywords = data_funnel_by_keywords.sort_values(by=['id'],ascending=False)
+  data_funnel_by_date = get_data_funnel(data_heatmap_by_date)
 
-  return data_heatmap_by_keywords, data_heatmap_by_time, data_funnel_by_keywords,data_funnel_by_time
+  return data_heatmap_by_keywords, data_heatmap_by_date, data_funnel_by_keywords,data_funnel_by_date
 
 if __name__ == "__main__":
     execute_preprocess(50,2018,1,2020,12)
