@@ -18,6 +18,13 @@ def get_hovertemplate_heatmap_keywords():
         "<b>%{z} </b>" +  "<extra></extra>"
     return style_heatmap_keywords
 
+def get_hovertemplate_heatmap_nb_pubs(unit):
+    if unit is 'year':
+        style_heatmap_nb_pubs = "Année : %{x|%Y} <br>Média : %{y} </br>Nombre de publications : %{z}<extra></extra>"
+    else :
+        style_heatmap_nb_pubs = "Mois et Année : %{x} <br>Média : %{y} </br>Nombre de publications : %{z}<extra></extra>"
+    return style_heatmap_nb_pubs
+
 def get_hovertemplate_linechart():
     style_linechart = "<span>Période: </span>" + \
     "<b>%{x}</b>" +  "<br><span>Nombre d'abonnés: : </span>" + \

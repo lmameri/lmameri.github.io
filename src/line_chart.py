@@ -2,6 +2,10 @@ import plotly.graph_objects as go
 import preprocess
 import hovertemplate
 
+
+WIDTH = 1000
+HEIGHT =  500
+
 def get_linechart(df,media_list):
         fig = go.Figure()
         button_list = []
@@ -13,7 +17,7 @@ def get_linechart(df,media_list):
                         y=df.loc[df['compte'] == media_list[i]]['MaxFollowers'],
                         mode="lines",
                         name=media_list[i],
-                        hovertemplate=get_hovertemplate_linechart())) 
+                        hovertemplate=hovertemplate.get_hovertemplate_linechart())) 
                 temp = [0.1] *(len(media_list)+1)
                 temp[i] = [1] 
                 button_list.append(dict( args=[{'opacity': temp}], label=media_list[i], method='restyle'))
@@ -32,5 +36,5 @@ def get_linechart(df,media_list):
                         )
                 ]
         )
-        fig.show()
-return fig
+        fig.update_layout(autosize=False,width=WIDTH,height=HEIGHT)
+        return fig

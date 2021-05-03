@@ -4,6 +4,8 @@ import plotly.express as px
 from plotly import graph_objs as go
 from preprocess import preprocess_histogram
 
+WIDTH = 1000
+HEIGHT =  500
 
 def histogram_plotting(information, nb_bins=50):
     data_needed = preprocess_histogram()
@@ -81,4 +83,5 @@ def histogram_plotting(information, nb_bins=50):
                       yaxis_title="Nombre de publications"
                       )
     #fig.update_layout(yaxis_title="Fréquence des publications")
+    fig.update_layout(autosize=False,width=WIDTH,height=HEIGHT)
     return fig

@@ -7,29 +7,28 @@ df_insta['date'] = pd.to_datetime(df_insta['date'])
 # Get number of publications per media per year
 def get_nbpubs_yearly(df_initial):
     df = df_initial.copy()
-    df['date']=df['date'].dt.year
+    df['date'] = df['date'].dt.year
     df = df.rename(columns={"date": "year"})
-    df= df.groupby(['compte','year']).size().unstack(fill_value=0)
+    df = df.groupby(['compte', 'year']).size().unstack(fill_value=0)
+    df.columns = pd.date_range(
+        start='6/15/2011', end='6/15/2020', freq=pd.DateOffset(years=1))
+    df.replace(0, np.nan, inplace=True)
+    df = df.reindex(index=df.index[::-1])
     return df
 
 # Get number of publications per media per month for a given year
-def get_nbpubs_monthly(df_initial, year,media_list):
+def get_nbpubs_monthly(df_initial):
     df = df_initial.copy()
-    df = df[df['date'].dt.year==year]
-    df['date']=df['date'].dt.month
-    df = df.rename(columns={"date": "Mois_nb"})
-    months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Jui', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc' ]
-    df['Mois']= [months[month-1] for month in df['Mois_nb'].tolist()]
-    df_months = pd.DataFrame (months, columns = ['Mois'])
-    df_medias = pd.DataFrame (media_list, columns = ['compte'])
-    df=df_months.merge(df.merge(df_months,how='right',on='Mois',sort='False'))# We double merge to keep the order
-    df= df.groupby(['compte','Mois'],sort=False).size().unstack(fill_value=0)
-    df=df.merge(df_medias,how='right',on='compte',sort='False').fillna(0)
-    for month in months:
-        if month not in df.columns.tolist():
-            df[month]=0 
-    df = pd.DataFrame(df, columns=months)
-    df = df[df.columns.tolist()].applymap(np.int64)
+    df['date'] = pd.to_datetime(df['date'])
+    df['date'] = df['date'].values.astype('datetime64[M]')
+    df = df.groupby(['date', 'compte']).size().to_frame('nb_pubs').reset_index()
+    days_of_year = pd.date_range(start='1/1/2011', end='31/12/2020').to_frame(index=False, name='date')
+    days_of_year['date'] = days_of_year['date'].values.astype('datetime64[M]')
+    days_of_year['date'] = days_of_year.drop_duplicates(subset=['date'], keep='first')
+    days_of_year = days_of_year[days_of_year['date'].notnull()].reset_index()
+    df = days_of_year.merge(df, on='date', how='left').fillna(0).astype({'nb_pubs': int})
+    df = pd.pivot_table(df, index="compte", columns="date", values="nb_pubs").iloc[1:]
+    df = df.reindex(index=df.index[::-1])
     return df
 
 def preprocess_heatmap():
@@ -80,15 +79,7 @@ def preprocess_histogram():
     data_needed['vues'].loc[(data_needed['vues']>10000)]=10000
     return data_needed
 
-# if __name__ == "__main__":
-#     preprocess_barchart_account('FRANCE 24')
-    
-#df,media_list=preprocess_heatmap()
-#df_count_yearly = get_nbpubs_yearly(df)
-#print(df_count_yearly)
-#df_count_monthly = get_nbpubs_monthly(df, 2019, media_list)
-#print('Count')
-#print(df_count_monthly) 
+
 
 
 

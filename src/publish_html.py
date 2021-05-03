@@ -1,19 +1,19 @@
-import plotly.io as pio
 import preprocess 
 import heatmap
 import line_chart
 import barchart
-import test_button
 import funnel
 import nlp_preprocess
 import histogram
+import descriptions_helper as dh
 
 #                               DEFINE VIZS
 
-# Viz 1 - Heatmap par media / en commentaire pour l'instant 
+# Viz 1 - Heatmap par media 
 df_heatmap, media_list = preprocess.preprocess_heatmap()
 df_count_yearly = preprocess.get_nbpubs_yearly(df_heatmap)
-fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly,df_heatmap)
+df_count_monthly=preprocess.get_nbpubs_monthly(df_heatmap)
+fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly,df_count_monthly)
 
 # Viz 2 - Heatmap par mots-clés/Symboles
 data_heatmap_by_keywords, data_heatmap_by_time, data_funnel_by_keywords,data_funnel_by_time = nlp_preprocess.execute_preprocess(50,2018,1,2020,12)
@@ -34,24 +34,29 @@ fig_hist_likes = histogram.histogram_plotting("likes")
 fig_hist_followers = histogram.histogram_plotting("followers")
 fig_hist_vues = histogram.histogram_plotting("vues")
 
+#                          INSERTION OF VIZS IN THE HTML PAGE
 
-# Viz des tests a retirer avant soumission (exemple extrait des tutoriels plotly)
-#fig_test = heatmap.get_heatmap_test()
-#fig_test_button = test_button.test_button()
-#pio.write_html(fig_test_button, file="pages/test_button.html", auto_open=True)
-
-
-#                          INSERT VIZS IN THE HTML PAGE
-
-# Ajouter vos visualisations ici 
-# Sous le format f.write(fig_NOM_DE_VOTRE_FIG.to_html(full_html=False))
 with open('index.html', 'w') as f:
+    # Introduction
+    f.write(dh.get_intro_text())
+
+    f.write(dh.get_heatmap_nbpubs_text())
     f.write(fig_heatmap_yearly.to_html(full_html=False))
+
+    f.write(dh.get_heatmap_funnel_keywords_text())
     f.write(fig_heatmap_likes.to_html(full_html=False))
     f.write(fig_funnel.to_html(full_html=False))
+
+    f.write(dh.get_barchart_text())
     f.write(fig_barchart.to_html(full_html=False))
+
+    f.write(dh.get_linechart_text())
     f.write(fig_linechart.to_html(full_html=False))
+
+    f.write(dh.get_histograms_text())
     f.write(fig_hist_likes.to_html(full_html=False))
     f.write(fig_hist_followers.to_html(full_html=False))
     f.write(fig_hist_vues.to_html(full_html=False))
+
+    f.write(dh.get_data_info_text())
     f.close()

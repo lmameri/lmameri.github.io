@@ -8,7 +8,8 @@ df_insta = pd.read_csv('src/data/poly-Instagram-2011-2020.csv')
 media_list=df_insta['compte'].unique()
 
 COLORS = ['rgb(243, 231, 155)', 'rgb(248, 160, 126)', 'rgb(206, 102, 147)', 'rgb(92, 83, 165)']
-
+WIDTH = 1000
+HEIGHT =  700
 def get_barchart():
     fig = go.Figure()
 
@@ -61,4 +62,5 @@ def get_barchart():
         dict(text="Liste des médias", x=1.1, xref="paper", y=0.6, yref="paper",
                              align="left", showarrow=False),
     ])
+    fig.update_layout(autosize=False,width=WIDTH,height=HEIGHT)
     return fig

@@ -2,109 +2,73 @@ import preprocess
 import plotly.graph_objects as go
 import hovertemplate
 
+WIDTH_HEATMAP_YEARLY = 1000
+HEIGHT_HEATMAP_YEARLY =  700
+WIDTH_HEATMAP_KEYWORDS = 1000
+HEIGHT_HEATMAP_KEYWORDS =  700
 
 
-def get_heatmap_yearly(data,df):
-    years = data.columns.to_list()
-    years = [str(year) for year in years]
-    medias= data.index.to_list()
-    months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Jui', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc' ]
-    data = data.reindex(index=data.index[::-1])
+# Generate the heatmap representing the number of publications per year
+def get_heatmap_yearly(df_yearly, df_monthly):
+    medias = df_yearly.index.to_list()
+
     # create figure
     fig = go.Figure()
 
-    
     # Add heatmap yearly trace
     fig.add_trace(go.Heatmap(visible=True,
-                    z=data.values,
-                    x=years,
-                    y=medias,
-                    hoverongaps = False,colorscale='sunset',
-                    hovertemplate = "Année : %{x} <br>Média : %{y} </br>Nombre de publications : %{z}<extra></extra>"))
-    
+                             z=df_yearly.values,
+                             x=df_yearly.columns,
+                             y=df_yearly.index,
+                             hoverongaps=False, colorscale='sunset',
+                             hovertemplate=hovertemplate.get_hovertemplate_heatmap_nb_pubs('year')))
+
     # Add heatmap monthly traces for each year
-    for year in data.columns.to_list():
-        fig.add_trace(go.Heatmap(visible=False,
-                        z=preprocess.get_nbpubs_monthly(df, year,medias).values,
-                        x=months,
-                        y=medias,
-                        hoverongaps = False,colorscale='sunset',
-                        hovertemplate = "Mois : %{x} <br>Média : %{y} </br>Nombre de publications : %{z}<extra></extra>"))
+    fig.add_trace(go.Heatmap(visible=False,
+                             z=df_monthly.values,
+                             x=df_monthly.columns,
+                             y=df_monthly.index,
+                             hoverongaps=False, colorscale='sunset',
+                             hovertemplate=hovertemplate.get_hovertemplate_heatmap_nb_pubs('month')))
 
     fig.update_yaxes(tickvals=medias)
     fig.update_layout(title='Nombre de publications par média par année')
-    
+
+    # Define buttons
     fig.update_layout(
         updatemenus=[
             dict(
                 type="buttons",
-                direction="down",
+                direction="left",
                 x=1.25,
-                y=1,
+                y=1.1,
                 showactive=True,
                 buttons=list(
                     [
                         dict(
-                            label="Toutes les années",
+                            label="Vues globales annuelles",
                             method="update",
-                            args=[{"visible": [True, False, False, False, False, False, False,False,False,False,False]}],
+                            args=[{"visible": [True, False]}],
                         ),
                         dict(
-                            label="2011",
+                            label="Vues globales mensuelles ",
                             method="update",
-                            args=[{"visible":  [False, True, False, False, False, False, False,False,False,False,False]}],
-                        ),
-                        dict(
-                            label="2012",
-                            method="update",
-                            args=[{"visible":  [False, False, True, False, False, False, False,False,False,False,False]}],
-                        ),
-                        dict(
-                            label="2013",
-                            method="update",
-                            args=[{"visible":  [False, False, False, True, False, False, False,False,False,False,False]}],
-                        ),
-                        dict(
-                            label="2014",
-                            method="update",
-                            args=[{"visible":  [False, False, False, False, True, False, False,False,False,False,False]}],
-                        ),
-                        dict(
-                            label="2015",
-                            method="update",
-                            args=[{"visible":  [False, False, False, False, False, True, False,False,False,False,False]}],
-                        ),
-                        dict(
-                            label="2016",
-                            method="update",
-                            args=[{"visible":  [False, False, False, False, False, False, True,False,False,False,False]}],
-                        ),
-                        dict(
-                            label="2017",
-                            method="update",
-                            args=[{"visible":  [False, False, False, False, False, False, False,True,False,False,False]}],
-                        ),
-                        dict(
-                            label="2018",
-                            method="update",
-                            args=[{"visible":  [False, False, False, False, False, False, False,False,True,False,False]}],
-                        ),
-                        dict(
-                            label="2019",
-                            method="update",
-                            args=[{"visible":  [False, False, False, False, False, False, False,False,False,True,False]}],
-                        ),
-                        dict(
-                            label="2020",
-                            method="update",
-                            args=[{"visible":  [False, False, False, False, False, True, False,False,False,False,True]}],
+                            args=[{"visible":  [False, True]}],
                         ),
                     ]
                 ),
             )
         ]
     )
-    fig.update_layout(dragmode=False,xaxis_title="Période de publication",yaxis_title="Médias")
+    fig.update_layout(dragmode=False,
+                      plot_bgcolor='rgba(0, 0, 0,0)',
+                      xaxis_title="Période de publication",
+                      yaxis_title="Médias",
+                      yaxis_nticks=len(medias),
+                      xaxis_dtick='M12',
+                      xaxis_ticklabelmode='period')
+    fig.update_layout(autosize=False,width=WIDTH_HEATMAP_YEARLY,height=HEIGHT_HEATMAP_YEARLY)
+	
     return fig
 
 
@@ -180,14 +144,14 @@ def get_heatmap_keywords(data_heatmap_bykeywords,data_heatmap_bytime):
         ]
     )
 
-    fig.update_layout(xaxis_title="Date de publication",yaxis_title="Mots clés",dragmode=False, plot_bgcolor='rgba(0, 0, 0,0)', xaxis=dict(showgrid=False,  zeroline=False), yaxis=dict(showgrid=True,  zeroline=False),
-    height=1000,title=title_map,
+    fig.update_layout(xaxis_title="Date de publication",yaxis_title="Mots clés",dragmode=False, plot_bgcolor='rgba(0, 0, 0,0)', xaxis=dict(showgrid=False,  zeroline=False), yaxis=dict(showgrid=True,  zeroline=False),title=title_map,
     annotations=[
         dict(text="Métriques : ", x=0.6, xref="paper", y=1.04, yref="paper",
                              align="left", showarrow=False),
         dict(text="Classement des mots clés : ", x=0, xref="paper", y=1.04, yref="paper",
                              align="left", showarrow=False),
     ])
+    fig.update_layout(autosize=False,width=WIDTH_HEATMAP_KEYWORDS,height=HEIGHT_HEATMAP_KEYWORDS)
     return fig
 
 
