@@ -5,7 +5,8 @@ from plotly import graph_objs as go
 from preprocess import preprocess_histogram
 
 WIDTH = 1000
-HEIGHT =  500
+HEIGHT = 500
+
 
 def histogram_plotting(information, nb_bins=50):
     data_needed = preprocess_histogram()
@@ -13,7 +14,8 @@ def histogram_plotting(information, nb_bins=50):
         data_needed = data_needed[data_needed['followers'].notna()]
         data_needed[information] = data_needed[information].astype(int)
 
-    step = int((data_needed[information].max() - data_needed[information].min()) / nb_bins)
+    step = int((data_needed[information].max() -
+               data_needed[information].min()) / nb_bins)
     min_hist = data_needed[information].min()
     max_hist = data_needed[information].max()
     media_list = data_needed['compte'].unique()
@@ -22,9 +24,11 @@ def histogram_plotting(information, nb_bins=50):
         if media == 'all':
             data_needed_media = data_needed.copy()
         else:
-            data_needed_media = data_needed.loc[data_needed['compte'] == media].copy()
+            data_needed_media = data_needed.loc[data_needed['compte'] == media].copy(
+            )
 
-        hist = np.histogram(data_needed_media[information], bins=range(min_hist, max_hist + step * 2, step))
+        hist = np.histogram(data_needed_media[information], bins=range(
+            min_hist, max_hist + step * 2, step))
         labels = []
         for i, j in zip(hist[1][0::1], hist[1][1::1]):
             if j <= max_hist:
@@ -34,7 +38,8 @@ def histogram_plotting(information, nb_bins=50):
 
         data = go.Bar(x=labels,
                       y=hist[0], hovertemplate='<br><b>Nombre de publications:</b>: %{y:} ' +
-                                               '<br><b>' + information + ':</b>: %{x}<br> <extra></extra>',
+                                               '<br><b>' + information +
+                      ':</b>: %{x}<br> <extra></extra>',
                       visible=True if media == 'all' else False)
 
         return data
@@ -56,7 +61,8 @@ def histogram_plotting(information, nb_bins=50):
         tickangle=45
     )
 
-    fig.update_layout(title_text='Distribution du nombre de {information} dans les publications'.format(information=information))
+    fig.update_layout(title_text='Distribution du nombre de {information} dans les publications'.format(
+        information=information))
 
     list_scroll = []
 
@@ -79,9 +85,10 @@ def histogram_plotting(information, nb_bins=50):
                                         y=1.24,
                                         yanchor="top"
                                         )],
-                      xaxis_title="{information}".format(information=information),
+                      xaxis_title="{information}".format(
+                          information=information),
                       yaxis_title="Nombre de publications"
                       )
     #fig.update_layout(yaxis_title="Fréquence des publications")
-    fig.update_layout(autosize=False,width=WIDTH,height=HEIGHT)
+    fig.update_layout(autosize=False, width=WIDTH, height=HEIGHT)
     return fig

@@ -21,7 +21,6 @@ fig_heatmap_likes = heatmap.get_heatmap_keywords(data_heatmap_by_keywords,data_h
 fig_funnel = funnel.get_funnel(data_funnel_by_keywords,data_funnel_by_time)
 
 # Viz 3 - Line chart
-#fig_line_chart = line_chart.get_linechart(data)
 df_linechart, media_list=preprocess.preprocess_linechart()
 fig_linechart=line_chart.get_linechart(df_linechart,media_list)
 
