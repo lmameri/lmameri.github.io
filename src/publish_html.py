@@ -30,7 +30,7 @@ fig_barchart = barchart.get_barchart()
 
 # Viz 5 - Histogrammes
 fig_hist_likes = histogram.histogram_plotting("likes")
-fig_hist_followers = histogram.histogram_plotting("followers")
+fig_hist_followers = histogram.histogram_plotting("commentaires")
 fig_hist_vues = histogram.histogram_plotting("vues")
 
 #                          INSERTION OF VIZS IN THE HTML PAGE
