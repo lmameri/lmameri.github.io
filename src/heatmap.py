@@ -109,7 +109,7 @@ def get_heatmap_keywords(data_heatmap_bykeywords, data_heatmap_bytime):
                                 data_heatmap_bykeywords['date']], "y": [data_heatmap_bykeywords['mot']]}],
                         ),
                         dict(
-                            label="Par ordre d'apparition dans le temps",
+                            label="Par ordre chronologique",
                             method="update",
                             args=[{"customdata": ['by_date'], "z": [data_heatmap_bytime['nb_likes']], "x": [
                                 data_heatmap_bytime['date']], "y": [data_heatmap_bytime['mot']]}],
