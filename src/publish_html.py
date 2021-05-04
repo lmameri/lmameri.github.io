@@ -43,8 +43,10 @@ with open('index.html', 'w') as f:
     f.write(dh.get_heatmap_nbpubs_text())
     f.write(fig_heatmap_yearly.to_html(full_html=False))
 
-    f.write(dh.get_heatmap_funnel_keywords_text())
+    f.write(dh.get_heatmap_keywords_text())
     f.write(fig_heatmap_likes.to_html(full_html=False))
+
+    f.write(dh.get_funnel_keywords_text())
     f.write(fig_funnel.to_html(full_html=False))
 
     f.write(dh.get_barchart_text())
@@ -58,5 +60,4 @@ with open('index.html', 'w') as f:
     f.write(fig_hist_followers.to_html(full_html=False))
     f.write(fig_hist_vues.to_html(full_html=False))
 
-    f.write(dh.get_data_info_text())
     f.close()
