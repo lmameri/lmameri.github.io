@@ -14,12 +14,7 @@ def get_funnel(data_funnel_by_keywords, data_funnel_by_time):
     fig = go.Figure()
 
     colors = ['rgb(92, 83, 165)' for x in data_funnel_by_keywords['mot']]
-    marker = {"color": colors, "line": {"color": colors}}
-    connector = {"line": {"color": "rgb(191, 88, 95)"}}
-    trace_funnel = go.Funnel(y=data_funnel_by_keywords['mot'], x=data_funnel_by_keywords['nb_occurences'],
-                             marker=marker, connector=connector, hovertemplate=hovertemplate.get_hovertemplate_funnel())
 
-    # Test bar chart
     trace_bar = go.Bar(
         y=data_funnel_by_keywords['mot'],
         x=data_funnel_by_keywords['nb_occurences'],
@@ -27,15 +22,14 @@ def get_funnel(data_funnel_by_keywords, data_funnel_by_time):
     )
 
     fig.add_traces(trace_bar)
-    # fig.add_traces(trace_funnel)
 
     fig.update_layout(
         updatemenus=[
             dict(
                 type="buttons",
                 direction="left",
-                x=0.5,
-                y=1.1,
+                x=0.8,
+                y=1.05,
                 showactive=True,
                 buttons=list(
                     [

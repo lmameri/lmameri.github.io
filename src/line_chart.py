@@ -33,8 +33,8 @@ def get_linechart(df, media_list):
             dict(
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0,
-                    y=1.5,
+                    x=1.3,
+                    y=1.15,
                     buttons=button_list
             )
         ]
