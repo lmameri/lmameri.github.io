@@ -36,7 +36,8 @@ fig_hist_vues = histogram.histogram_plotting("vues")
 #                          INSERTION OF VIZS IN THE HTML PAGE
 
 with open('index.html', 'w') as f:
-    # Introduction
+
+    f.write(dh.get_title())
     f.write(dh.get_intro_text())
 
     f.write(dh.get_heatmap_nbpubs_text())
