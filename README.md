@@ -14,11 +14,13 @@ Veuillez cliquer sur le lien ci-dessous pour visualiser le résultat final :
 
 Consulter le document 'requirements.txt' pour les librairies requises.
 On peut installer les requis à l'aide de la commande suivante :
+
 `pip install -r requirements.txt`
 
 ## Exécution du code
 
 Il faut exécuter le code à partir de la racine du projet à l'aide de la commande suivante :
+
 `python .\src\publish_html.py`
 
 ### Contenu
