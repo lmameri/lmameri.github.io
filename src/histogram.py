@@ -10,8 +10,8 @@ HEIGHT = 500
 
 def histogram_plotting(information, nb_bins=50):
     data_needed = preprocess_histogram()
-    if information == 'followers':
-        data_needed = data_needed[data_needed['followers'].notna()]
+    if information == 'commentaires':
+        data_needed = data_needed[data_needed['commentaires'].notna()]
         data_needed[information] = data_needed[information].astype(int)
 
     step = int((data_needed[information].max() -

@@ -87,6 +87,6 @@ def preprocess_histogram():
     data = df_insta.copy()
     data = data[['compte', 'followers', 'likes', 'commentaires', 'vues']]
     data['likes'].loc[(data['likes'] > 1500)] = 1500
-    data['followers'].loc[(data['followers'] > 500000)] = 500000
+    data['commentaires'].loc[(data['commentaires'] > 50)] = 50
     data['vues'].loc[(data['vues'] > 10000)] = 10000
     return data
