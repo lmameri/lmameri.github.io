@@ -40,7 +40,7 @@ def histogram_plotting(information, nb_bins=50):
                       y=hist[0], hovertemplate='<br><b>Nombre de publications:</b>: %{y:} ' +
                                                '<br><b>' + information +
                       ':</b>: %{x}<br> <extra></extra>',
-                      visible=True if media == 'all' else False)
+                      visible=True if media == 'all' else False, marker={'color': 'rgb(92, 83, 165)'})
 
         return data
 
