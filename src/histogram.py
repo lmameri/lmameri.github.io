@@ -3,6 +3,7 @@ import numpy as np
 import plotly.express as px
 from plotly import graph_objs as go
 from preprocess import preprocess_histogram
+import hovertemplate
 
 WIDTH = 1000
 HEIGHT = 500
@@ -37,9 +38,7 @@ def histogram_plotting(information, nb_bins=50):
                 labels.append('> {}'.format(i))
 
         data = go.Bar(x=labels,
-                      y=hist[0], hovertemplate='<br><b>Nombre de publications:</b>: %{y:} ' +
-                                               '<br><b>' + information +
-                      ':</b>: %{x}<br> <extra></extra>',
+                      y=hist[0], hovertemplate=hovertemplate.get_hovertemplate_histogram(information),
                       visible=True if media == 'all' else False, marker={'color': 'rgb(92, 83, 165)'})
 
         return data
