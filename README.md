@@ -7,8 +7,8 @@
 * Projet de la session d'hiver 2021 du cours INF8808 à l'École Polytechnique de Montréal avec le Pr. Thomas Hurtut.
 * Le projet est en Python et HTML.
 
-Veuillez suivre le lien ci-dessous pour visualiser le résultat final :
-`lmameri.github.io/index.html`
+Veuillez cliquer sur le lien ci-dessous pour visualiser le résultat final :
+[Lien vers la page](https://lmameri.github.io/index.html)
 
 ## Requis
 
