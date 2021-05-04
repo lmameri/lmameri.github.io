@@ -6,19 +6,21 @@ import hovertemplate
 WIDTH = 1000
 HEIGHT = 1100
 
-# permet la realisation du funnel avec plotly
+# permet la realisation du barchart avec plotly
 # paramètres : 1 dataframe des mots cles triees par importance et 1 dataframe des mots cles triees par ordre d apparition
 
 
-def get_funnel(data_funnel_by_keywords, data_funnel_by_time):
+def get_barchart(data_barchart_by_keywords, data_barchart_by_time):
     fig = go.Figure()
 
-    colors = ['rgb(92, 83, 165)' for x in data_funnel_by_keywords['mot']]
-
+    colors = ['rgb(92, 83, 165)' for x in data_barchart_by_keywords['mot']]
+    marker = {"color": colors, "line": {"color": colors}}
+    connector = {"line": {"color": "rgb(191, 88, 95)"}}
+ 
     trace_bar = go.Bar(
-        y=data_funnel_by_keywords['mot'],
-        x=data_funnel_by_keywords['nb_occurences'],
-        orientation='h', marker=dict(color='rgb(92, 83, 165)'), hovertemplate=hovertemplate.get_hovertemplate_funnel()
+        y=data_barchart_by_keywords['mot'],
+        x=data_barchart_by_keywords['nb_occurences'],
+        orientation='h', marker=dict(color='rgb(92, 83, 165)'), hovertemplate=hovertemplate.get_hovertemplate_barchart()
     )
 
     fig.add_traces(trace_bar)
@@ -28,7 +30,7 @@ def get_funnel(data_funnel_by_keywords, data_funnel_by_time):
             dict(
                 type="buttons",
                 direction="left",
-                x=0.8,
+                x=0.7,
                 y=1.05,
                 showactive=True,
                 buttons=list(
@@ -36,14 +38,14 @@ def get_funnel(data_funnel_by_keywords, data_funnel_by_time):
                         dict(
                             label="Par score TF-IDF",
                             method="update",
-                            args=[{"x": [data_funnel_by_keywords['nb_occurences']], "y": [
-                                data_funnel_by_keywords['mot']]}]
+                            args=[{"x": [data_barchart_by_keywords['nb_occurences']], "y": [
+                                data_barchart_by_keywords['mot']]}]
                         ),
                         dict(
                             label="Par ordre d\'apparition dans le temps",
                             method="update",
-                            args=[{"x": [data_funnel_by_time['nb_occurences']], "y": [
-                                data_funnel_by_time['mot']]}]
+                            args=[{"x": [data_barchart_by_time['nb_occurences']], "y": [
+                                data_barchart_by_time['mot']]}]
                         )
                     ]
                 )

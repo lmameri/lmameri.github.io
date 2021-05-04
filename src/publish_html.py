@@ -2,7 +2,7 @@ import preprocess
 import heatmap
 import line_chart
 import barchart
-import funnel
+import barchart_keywords
 import nlp_preprocess
 import histogram
 import descriptions_helper as dh
@@ -16,16 +16,16 @@ df_count_monthly=preprocess.get_nbpubs_monthly(df_heatmap)
 fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly,df_count_monthly)
 
 # Viz 2 - Heatmap par mots-clés/Symboles
-data_heatmap_by_keywords, data_heatmap_by_time, data_funnel_by_keywords,data_funnel_by_time = nlp_preprocess.execute_preprocess(50,2018,1,2020,12)
+data_heatmap_by_keywords, data_heatmap_by_time, data_barchart_by_keywords,data_barchart_by_time = nlp_preprocess.execute_preprocess(50,2018,1,2020,12)
 fig_heatmap_likes = heatmap.get_heatmap_keywords(data_heatmap_by_keywords,data_heatmap_by_time)
-fig_funnel = funnel.get_funnel(data_funnel_by_keywords,data_funnel_by_time)
+fig_barchart_keywords = barchart_keywords.get_barchart(data_barchart_by_keywords,data_barchart_by_time)
 
 # Viz 3 - Line chart
 df_linechart, media_list=preprocess.preprocess_linechart()
 fig_linechart=line_chart.get_linechart(df_linechart,media_list)
 
 # Viz 4 - Bar chart
-fig_barchart = barchart.get_barchart()
+fig_barchart_publications = barchart.get_barchart()
 
 
 # Viz 5 - Histogrammes
@@ -46,11 +46,11 @@ with open('index.html', 'w') as f:
     f.write(dh.get_heatmap_keywords_text())
     f.write(fig_heatmap_likes.to_html(full_html=False))
 
-    f.write(dh.get_funnel_keywords_text())
-    f.write(fig_funnel.to_html(full_html=False))
+    f.write(dh.get_barchart_keywords_text())
+    f.write(fig_barchart_keywords.to_html(full_html=False))
 
     f.write(dh.get_barchart_text())
-    f.write(fig_barchart.to_html(full_html=False))
+    f.write(fig_barchart_publications.to_html(full_html=False))
 
     f.write(dh.get_linechart_text())
     f.write(fig_linechart.to_html(full_html=False))

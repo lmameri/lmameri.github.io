@@ -251,15 +251,15 @@ def get_data_heatmap(topwords, unigram, bigram, data):
     df = df.sort_values(by=['id'], ascending=False)
     return(df)
 
-# recupere les donnees necessaires pour le funnel
+# recupere les donnees necessaires pour le barchart
 # paramètres : dataframe
-def get_data_funnel(df):
+def get_data_barchart(df):
     df = df.groupby(['mot', 'id'])['nb_occurences'].count().reset_index()
     df = df.sort_values(by=['id'], ascending=True)
     return(df)
 
 
-# execute les differentes etapes afin de recuperer les donnees necessaires pour la heatmap et le funnel
+# execute les differentes etapes afin de recuperer les donnees necessaires pour la heatmap et le barchart
 # paramètres : n le nombre n de mots cles qu on souhaite recuperer, la date de debut et le fin pour l intervalle de temps
 def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
     global DATA
@@ -293,9 +293,9 @@ def execute_preprocess(n, beg_year, beg_month, end_year, end_month):
     data_heatmap_by_date = data_heatmap_by_date.sort_values(
         by=['id'], ascending=True)
 
-    data_funnel_by_keywords = get_data_funnel(data_heatmap_by_keywords)
-    data_funnel_by_keywords = data_funnel_by_keywords.sort_values(
+    data_barchart_by_keywords = get_data_barchart(data_heatmap_by_keywords)
+    data_barchart_by_keywords = data_barchart_by_keywords.sort_values(
         by=['id'], ascending=False)
-    data_funnel_by_date = get_data_funnel(data_heatmap_by_date)
+    data_barchart_by_date = get_data_barchart(data_heatmap_by_date)
 
-    return data_heatmap_by_keywords, data_heatmap_by_date, data_funnel_by_keywords, data_funnel_by_date
+    return data_heatmap_by_keywords, data_heatmap_by_date, data_barchart_by_keywords, data_barchart_by_date
