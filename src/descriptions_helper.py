@@ -29,5 +29,5 @@ def get_histograms_text():
     return text
 
 def get_data_info_text():
-    text = '<div>Hello Data info </div>'
+    text = '<div></div>'
     return text
