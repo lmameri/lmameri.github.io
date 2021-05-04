@@ -1,6 +1,6 @@
 # This class contains the text descriptions for the web page.
 def get_title():
-    text = "<h1 style = 'font-size:38px; color:rgb(206, 102,147); font-family:Grenze Gotisch; text-align: center'> Étude des posts instagram entre 2011 et 2020</h1>"
+    text = "<h1 style = 'font-size:38px; color:rgb(206, 102,147); font-family:Grenze Gotisch; text-align: center'> &Eacute;tude des posts instagram entre 2011 et 2020</h1>"
     return text
 
 def get_intro_text():
