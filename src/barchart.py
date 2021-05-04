@@ -70,7 +70,7 @@ def get_barchart():
         barmode='stack', title='Nombre de publications des médias francophones', legend_title="Type de publication",
         xaxis_title="Date de publication", yaxis_title="Nombre de publications",
         annotations=[
-            dict(text="Liste des médias", x=1.1, xref="paper", y=0.6, yref="paper",
+            dict(text="Liste des médias", x=1.30, xref="paper", y=0.5, yref="paper",
                  align="left", showarrow=False),
         ])
     fig.update_layout(autosize=False, width=WIDTH, height=HEIGHT)
