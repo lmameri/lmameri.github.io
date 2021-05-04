@@ -1,23 +1,35 @@
-Pour ajouter votre visualisation :
 
-1) La créer et avoir une fonction qui la retourne. 
-Par exemple : get_heatmap() dans heatmap.py.
+# Projet du cours INF8808 - Visualisation de données
 
-2) Importer votre script .py dans publish_html.py et récupérer la viz dans le script publish_html.py entre les lignes 8 et 21 (checker la viz 1 pour un exemple)
-Par exemple : 
-`fig_heatmap_yearly = heatmap.get_heatmap_yearly(df_count_yearly)`
+## À propos
 
-3) Insérer votre viz après la ligne 32 de publish_html.py.
-Sous le format f.write(fig_NOM_DE_VOTRE_FIG.to_html(full_html=False))
-Par exemple :     
-`f.write(fig_heatmap_yearly.to_html(full_html=False))`
+* Diverses visualisations de données Instagram entre 2011 et 2020.
+* Projet de la session d'hiver 2021 du cours INF8808 à l'École Polytechnique de Montréal avec le Pr. Thomas Hurtut.
+* Le projet est en Python et HTML.
 
-4) Executer le script publish_html.py, cela devrait updater index.html en ajoutant votre viz. Vous pouvez vérifier localement en cliquant sur index.html, ca devrait ouvrir la page dans votre browser par défaut. Il faut exécuter depuis la racine du projet.
-`python ./src/publish_html.py`
+Veuillez cliquer sur le lien ci-dessous pour visualiser le résultat final :
+[Lien vers la page](lmameri.github.io/index.html)
 
-5) Add, commit, push votre code vers github et attendre quelques minutes pour visualiser la nouvelle page via le lien suivant :
-lmameri.github.io/index.html
+## Requis
 
+Consulter le document 'requirements.txt' pour les librairies requises.
+On peut installer les requis à l'aide de la commande suivante :
+`pip install -r requirements.txt`
 
-Go to lmameri.github.io/index.html
-to viz page.
+## Exécution du code
+
+Il faut exécuter le code à partir de la racine du projet à l'aide de la commande suivante :
+`python .\src\publish_html.py`
+
+### Contenu
+
+* Le script 'publish_html.py' permet de réunir nos visualisations afin d'obtenir la page web finale appelée 'index.html'. 
+* L'hôte de la page web est Github Pages. 
+
+## Équipe de développement
+* Thien-Kim Loisel-Luu (@luukim)
+* Ghassen Cherni (@Ghassen-Cherni)
+* Helene Ly (@HeleneLy01)
+* Lycia Mameri (@lmameri)
+* Souhaila Mellouk (@MelloukSouhaila)
+* Mourak Younes (@MouradYounes)
